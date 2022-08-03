@@ -14,8 +14,8 @@ public class Contacts {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne //(fetch= FetchType.LAZY)
-    @JoinColumn(name="id_contactType")
+    @ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name="id_contact_type")
     private ContactType idContactType;
 
     @ManyToOne
@@ -38,6 +38,6 @@ public class Contacts {
     private LocalDateTime timeCreated;
 
     @Column(name="time_updated")
-    private LocalDateTime time_updated;
+    private LocalDateTime timeUpdated;
 
 }

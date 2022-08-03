@@ -36,6 +36,6 @@ public class User {
     private LocalDateTime timeCreated;
 
     @Column(name="time_updated")
-    private LocalDateTime time_updated;
+    private LocalDateTime timeUpdated;
 
 }
