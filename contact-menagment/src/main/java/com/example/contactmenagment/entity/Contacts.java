@@ -3,7 +3,6 @@ package com.example.contactmenagment.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Data
@@ -16,7 +15,7 @@ public class Contacts {
 
     @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name="id_contact_type")
-    private ContactType idContactType;
+    private ContactType contactType;
 
     @ManyToOne
     @JoinColumn(name="id_user")
