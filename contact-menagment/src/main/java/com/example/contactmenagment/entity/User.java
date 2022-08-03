@@ -1,61 +1,41 @@
 package com.example.contactmenagment.entity;
 
-import org.hibernate.annotations.Type;
+
+import lombok.Data;
+
 
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
+@Data
 @Entity
-@Table(name = "\"user\"")
+@Table(name="users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_user", nullable = false)
-    private Integer id;
+    private Long id;
 
-    @Lob
-    @Column(name = "username")
-    @Type(type="org.hibernate.type.TextType")
-    private String username;
+    //@Column(name="email")
+    private String email;
 
-    @Lob
-    @Column(name = "password")
-    @Type(type="org.hibernate.type.TextType")
+    //@Column(name="first_name")
+    private String firstName;
+
+    //@Column(name="last_name")
+    private String lastName;
+
+    //@Column(name="password")
     private String password;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_role")
+    @JoinColumn(name="role_id")
     private Role idRole;
 
-    public Integer getId() {
-        return id;
-    }
+    //@Column(name="time_created")
+    private LocalDateTime timeCreated;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Role getIdRole() {
-        return idRole;
-    }
-
-    public void setIdRole(Role idRole) {
-        this.idRole = idRole;
-    }
+    //@Column(name="time_updated")
+    private LocalDateTime timeUpdated;
 
 }

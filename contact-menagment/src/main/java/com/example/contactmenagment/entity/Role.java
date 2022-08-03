@@ -1,36 +1,21 @@
 package com.example.contactmenagment.entity;
 
-import org.hibernate.annotations.Type;
+import lombok.Data;
 
 import javax.persistence.*;
 
+@Data
 @Entity
-@Table(name = "role")
+@Table(name="roles")
 public class Role {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_role", nullable = false)
-    private Integer id;
+    private Long id;
 
-    @Lob
-    @Column(name = "role_name")
-    @Type(type="org.hibernate.type.TextType")
+    @Column(name="role_name")
     private String roleName;
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
 
 }

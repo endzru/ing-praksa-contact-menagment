@@ -1,36 +1,26 @@
 package com.example.contactmenagment.entity;
 
-import org.hibernate.annotations.Type;
+
+import lombok.Data;
 
 import javax.persistence.*;
 
+import java.time.LocalDateTime;
+@Data
 @Entity
-@Table(name = "contact_type")
+@Table(name="contact_type")
 public class ContactType {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_contact_type", nullable = false)
-    private Integer id;
+    private Long id;
 
-    @Lob
-    @Column(name = "contact_type_name")
-    @Type(type="org.hibernate.type.TextType")
+    //@Column(name="contact_type_name")
     private String contactTypeName;
 
-    public Integer getId() {
-        return id;
-    }
+    //@Column(name="time_created")
+    private LocalDateTime timeCreated;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getContactTypeName() {
-        return contactTypeName;
-    }
-
-    public void setContactTypeName(String contactTypeName) {
-        this.contactTypeName = contactTypeName;
-    }
-
+    //@Column(name="time_updated")
+    private LocalDateTime timeUpdated;
 }
