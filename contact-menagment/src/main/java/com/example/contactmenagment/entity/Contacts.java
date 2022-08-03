@@ -11,32 +11,32 @@ import java.time.LocalDateTime;
 public class Contacts {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @ManyToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name="id_contact_type")
+    @JoinColumn(name="contact_type_id")
     private ContactType contactType;
 
     @ManyToOne
-    @JoinColumn(name="id_user")
+    @JoinColumn(name="user_id")
     private User user;
 
-    @Column(name="contact_first_name")
+    //@Column(name="contact_first_name")
     private String contactFirstName;
 
-    @Column(name="contact_last_name")
+    //@Column(name="contact_last_name")
     private String contactLastName;
 
-    @Column(name="contact_email")
+   // @Column(name="contact_email")
     private String contactEmail;
 
-    @Column(name="contact_phonenumber")
+   // @Column(name="contact_phonenumber")
     private String contactPhonenumber;
 
-    @Column(name="time_created")
+   // @Column(name="time_created")
     private LocalDateTime timeCreated;
 
-    @Column(name="time_updated")
+   // @Column(name="time_updated")
     private LocalDateTime timeUpdated;
 
 }

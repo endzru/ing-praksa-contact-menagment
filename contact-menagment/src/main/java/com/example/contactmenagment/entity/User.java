@@ -14,28 +14,28 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @Column(name="email")
+    //@Column(name="email")
     private String email;
 
-    @Column(name="first_name")
+    //@Column(name="first_name")
     private String firstName;
 
-    @Column(name="last_name")
+    //@Column(name="last_name")
     private String lastName;
 
-    @Column(name="password")
+    //@Column(name="password")
     private String password;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="id_role")
+    @JoinColumn(name="role_id")
     private Role idRole;
 
-    @Column(name="time_created")
+    //@Column(name="time_created")
     private LocalDateTime timeCreated;
 
-    @Column(name="time_updated")
+    //@Column(name="time_updated")
     private LocalDateTime timeUpdated;
 
 }

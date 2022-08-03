@@ -13,14 +13,14 @@ public class ContactType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @Column(name="contact_type_name")
+    //@Column(name="contact_type_name")
     private String contactTypeName;
 
-    @Column(name="time_created")
+    //@Column(name="time_created")
     private LocalDateTime timeCreated;
 
-    @Column(name="time_updated")
+    //@Column(name="time_updated")
     private LocalDateTime timeUpdated;
 }

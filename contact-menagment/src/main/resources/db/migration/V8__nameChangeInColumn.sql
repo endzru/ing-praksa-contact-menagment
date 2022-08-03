@@ -1,1 +1,0 @@
-alter table contacts rename column "id_contactType" TO "id_contact_type"
