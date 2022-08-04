@@ -3,13 +3,10 @@ package com.example.contactmenagment.services.implementation;
 import com.example.contactmenagment.entity.User;
 import com.example.contactmenagment.repository.UserRepository;
 import com.example.contactmenagment.services.interfaces.ServicesInterface;
-//import com.example.contactmenagment.services.interfaces.UserServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.lang.annotation.Annotation;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 
 
@@ -22,9 +19,7 @@ public class UserService implements ServicesInterface<User> {
     @Override
     public void deleteByUid(UUID uid) {
         userRepository.deleteUserByUid(uid);
-
     }
-
 
     @Override
     public List<User> getAll() {

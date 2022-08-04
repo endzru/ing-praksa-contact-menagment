@@ -1,15 +1,10 @@
 package com.example.contactmenagment.entity;
 
 
-//import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.id.GUIDGenerator;
-import org.hibernate.id.UUIDGenerator;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;

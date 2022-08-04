@@ -3,9 +3,7 @@ package com.example.contactmenagment.controllers;
 
 import com.example.contactmenagment.entity.Role;
 import com.example.contactmenagment.services.implementation.RoleService;
-import io.swagger.models.Response;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

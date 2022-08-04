@@ -1,11 +1,9 @@
 package com.example.contactmenagment.repository;
 
-import com.example.contactmenagment.entity.ContactType;
 import com.example.contactmenagment.entity.Contacts;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.UUID;
 
 @Repository

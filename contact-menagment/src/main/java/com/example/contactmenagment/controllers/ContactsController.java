@@ -38,8 +38,6 @@ public class ContactsController {
     public Contacts updateContact(@RequestBody Contacts c){
         return contactsServce.save(c);
     }
-
-
     @DeleteMapping("{uid}")
     @ResponseBody
     public void deleteContactById(@PathVariable UUID uid){
