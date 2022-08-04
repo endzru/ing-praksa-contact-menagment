@@ -1,6 +1,8 @@
 package com.example.contactmenagment.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,7 +15,7 @@ public class Contacts {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch= FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name="contact_type_id")
     private ContactType contactType;
 
@@ -21,22 +23,19 @@ public class Contacts {
     @JoinColumn(name="user_id")
     private User user;
 
-    //@Column(name="contact_first_name")
     private String contactFirstName;
 
-    //@Column(name="contact_last_name")
     private String contactLastName;
 
-   // @Column(name="contact_email")
     private String contactEmail;
 
-   // @Column(name="contact_phonenumber")
     private String contactPhonenumber;
 
-   // @Column(name="time_created")
+    @CreationTimestamp
+    @Column(name="time_created", updatable = false)
     private LocalDateTime timeCreated;
 
-   // @Column(name="time_updated")
+    @UpdateTimestamp
     private LocalDateTime timeUpdated;
 
 }

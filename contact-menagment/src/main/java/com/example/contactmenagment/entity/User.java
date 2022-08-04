@@ -1,41 +1,39 @@
 package com.example.contactmenagment.entity;
 
 
+//import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Data
 @Entity
 @Table(name="users")
+
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //@Column(name="email")
     private String email;
 
-    //@Column(name="first_name")
     private String firstName;
 
-    //@Column(name="last_name")
     private String lastName;
 
-    //@Column(name="password")
     private String password;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name="role_id")
-    private Role idRole;
+    private Role role;
 
-    //@Column(name="time_created")
+    @Column(name="time_created", updatable = false)
+    @CreationTimestamp
     private LocalDateTime timeCreated;
 
-    //@Column(name="time_updated")
+    @UpdateTimestamp
     private LocalDateTime timeUpdated;
-
 }

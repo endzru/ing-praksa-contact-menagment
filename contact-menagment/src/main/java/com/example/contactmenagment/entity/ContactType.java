@@ -2,6 +2,8 @@ package com.example.contactmenagment.entity;
 
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 
@@ -18,9 +20,10 @@ public class ContactType {
     //@Column(name="contact_type_name")
     private String contactTypeName;
 
-    //@Column(name="time_created")
+    @CreationTimestamp
+    @Column(name="time_created", updatable = false)
     private LocalDateTime timeCreated;
 
-    //@Column(name="time_updated")
+    @UpdateTimestamp
     private LocalDateTime timeUpdated;
 }
