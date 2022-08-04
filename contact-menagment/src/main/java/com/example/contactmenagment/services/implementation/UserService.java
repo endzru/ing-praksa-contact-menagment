@@ -2,44 +2,44 @@ package com.example.contactmenagment.services.implementation;
 
 import com.example.contactmenagment.entity.User;
 import com.example.contactmenagment.repository.UserRepository;
-import com.example.contactmenagment.services.interfaces.UserServiceInterface;
+import com.example.contactmenagment.services.interfaces.ServicesInterface;
+//import com.example.contactmenagment.services.interfaces.UserServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements UserServiceInterface {
+public class UserService implements ServicesInterface<User> {
 
     private final UserRepository userRepository;
 
     @Override
-    public List<User> getAllUsers() {
+    public void deleteByUid(UUID uid) {
+        userRepository.deleteUserByUid(uid);
+
+    }
+
+
+    @Override
+    public List<User> getAll() {
         return userRepository.findAll();
     }
 
     @Override
-    public User getUserById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No User for ID: " + id + " found!"));
+    public User getByUid(UUID uid) {
+        return userRepository.findUserByUid(uid);
     }
 
     @Override
-    public User saveUser(User s) {
-        return userRepository.save(s);
+    public User save(User o) {
+        return userRepository.save(o);
     }
 
-    @Override
-    public User updateUser(User s) {
-        return userRepository.save(s);
-    }
 
-    @Override
-    public User deleteUserById(Long id) {
-        User temp = userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No User for ID: " + id + " found!"));
-        userRepository.deleteById(id);
-        return temp;
-    }
 }

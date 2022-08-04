@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,24 +19,30 @@ public class RoleController {
     private final RoleService roleService;
 
     @GetMapping
-    public ResponseEntity<List<Role>> getAllRoles(){
-        return ResponseEntity.ok().body(roleService.getAllRole());
+    @ResponseBody
+    public List<Role> getAllRoles(){
+        return roleService.getAll();
     }
-    @GetMapping("/{id}")
-    public ResponseEntity<Role> getRoleById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(roleService.getRoleById(id));
+    @GetMapping("/{uid}")
+    @ResponseBody
+    public Role getRoleById(@PathVariable UUID uid) {
+        return roleService.getByUid(uid);
     }
     @PostMapping
-    public ResponseEntity<Role> saveRole(@RequestBody Role role){
-        return ResponseEntity.ok().body(roleService.saveRole(role));
+    @ResponseBody
+    public Role saveRole(@RequestBody Role role){
+        role.setUid(UUID. randomUUID());
+        return roleService.save(role);
     }
 
     @PutMapping
-    public ResponseEntity<Role> updateRole(@RequestBody Role role){
-        return ResponseEntity.ok().body(roleService.updateRole(role));
+    @ResponseBody
+    public Role updateRole(@RequestBody Role role){
+        return roleService.save(role);
     }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Role> deleteRoleById(@PathVariable Long id){
-      return ResponseEntity.ok().body(roleService.deleteRoleById(id));
+    @DeleteMapping("/{uid}")
+    @ResponseBody
+    public void deleteRoleByUid(@PathVariable UUID uid){
+         roleService.deleteByUid(uid);
     }
 }

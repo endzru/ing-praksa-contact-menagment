@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,27 +21,32 @@ public class UserController {
     @GetMapping
     @ResponseBody
     public List<User> getAllUsers(){
-        return userService.getAllUsers();
+        return userService.getAll();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id ){
-        return ResponseEntity.ok().body(userService.getUserById(id));
+    @GetMapping("/{uid}")
+    @ResponseBody
+    public User getUserById(@PathVariable UUID uid ){
+        return userService.getByUid(uid);
     }
 
     @PostMapping
-    public ResponseEntity<User> saveUser(@RequestBody User s){
-        return ResponseEntity.ok().body(userService.saveUser(s));
+    @ResponseBody
+    public User saveUser(@RequestBody User s){
+        s.setUid(UUID. randomUUID());
+        return userService.save(s);
     }
 
     @PutMapping
-    public ResponseEntity<User> updateUser(@RequestBody User s){
-        return ResponseEntity.ok().body(userService.updateUser(s));
+    @ResponseBody
+    public User updateUser(@RequestBody User s){
+        return userService.save(s);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<User> deleteUserById(@PathVariable Long id){
-        return ResponseEntity.ok().body(userService.deleteUserById(id));
+    @DeleteMapping("/{uid}")
+    @ResponseBody
+    public void deleteUserByUid(@PathVariable UUID uid){
+        userService.deleteByUid(uid);
     }
 
 }

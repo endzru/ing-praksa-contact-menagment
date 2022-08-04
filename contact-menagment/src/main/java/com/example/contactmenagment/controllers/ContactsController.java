@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,27 +17,32 @@ public class ContactsController {
     private final ContactsService contactsServce;
 
     @GetMapping
-    public ResponseEntity<List<Contacts>> getAllContacts(){
-        return ResponseEntity.ok().body(contactsServce.getAllContacts());
+    @ResponseBody
+    public List<Contacts> getAllContacts(){
+        return contactsServce.getAll();
     }
-    @GetMapping("/{id}")
-    public ResponseEntity<Contacts> getContactById(@PathVariable Long id){
-        return ResponseEntity.ok().body(contactsServce.getContactById(id));
+    @GetMapping("/{uid}")
+    @ResponseBody
+    public ResponseEntity<Contacts> getContactById(@PathVariable UUID uid){
+        return ResponseEntity.ok().body(contactsServce.getByUid(uid));
     }
-    @GetMapping("/users/{id}")
-    public ResponseEntity<List<Contacts>> getContanctsByUserId(@PathVariable Long id){
-        return ResponseEntity.ok().body(contactsServce.getAllByUserId(id));
-    }
+
     @PostMapping
-    public ResponseEntity<Contacts> saveContact(@RequestBody Contacts c){
-        return ResponseEntity.ok().body(contactsServce.saveContact(c));
+    @ResponseBody
+    public Contacts saveContact(@RequestBody Contacts c){
+        c.setUid(UUID.randomUUID());
+        return contactsServce.save(c);
     }
     @PutMapping
-    public ResponseEntity<Contacts> updateContact(@RequestBody Contacts c){
-        return ResponseEntity.ok().body(contactsServce.updateContact(c));
+    @ResponseBody
+    public Contacts updateContact(@RequestBody Contacts c){
+        return contactsServce.save(c);
     }
-    @DeleteMapping("{id}")
-    public ResponseEntity<Contacts> deleteContactById(@PathVariable Long id){
-        return ResponseEntity.ok().body(contactsServce.deleteContactsByid(id));
+
+
+    @DeleteMapping("{uid}")
+    @ResponseBody
+    public void deleteContactById(@PathVariable UUID uid){
+         contactsServce.deleteByUid(uid);
     }
 }

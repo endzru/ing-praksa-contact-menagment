@@ -6,6 +6,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -30,6 +31,9 @@ public class Contacts {
     private String contactEmail;
 
     private String contactPhonenumber;
+
+    @Column(name="uid")
+    private UUID uid;
 
     @CreationTimestamp
     @Column(name="time_created", updatable = false)

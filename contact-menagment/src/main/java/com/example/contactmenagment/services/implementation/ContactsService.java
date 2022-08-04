@@ -2,48 +2,39 @@ package com.example.contactmenagment.services.implementation;
 
 import com.example.contactmenagment.entity.Contacts;
 import com.example.contactmenagment.repository.ContactsRepository;
-import com.example.contactmenagment.services.interfaces.ContactsServiceInterface;
+//import com.example.contactmenagment.services.interfaces.ContactsServiceInterface;
+import com.example.contactmenagment.services.interfaces.ServicesInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ContactsService implements ContactsServiceInterface {
+public class ContactsService implements ServicesInterface<Contacts> {
 
     private final ContactsRepository contactsRepository;
 
     @Override
-    public List<Contacts> getAllContacts() {
+    public void deleteByUid(UUID uid) {
+        contactsRepository.deleteContactsByUid(uid);
+    }
+
+    @Override
+    public List<Contacts> getAll() {
         return contactsRepository.findAll();
     }
 
     @Override
-    public Contacts getContactById(Long id) {
-        return contactsRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No Contact for id: " + id + " found!"));
+    public Contacts getByUid(UUID uid) {
+        return contactsRepository.getContactsByUid(uid);
     }
 
     @Override
-    public Contacts saveContact(Contacts c) {
-        return contactsRepository.save(c);
+    public Contacts save(Contacts contacts) {
+        return contactsRepository.save(contacts);
     }
 
-    @Override
-    public Contacts updateContact(Contacts c) {
-        return contactsRepository.save(c);
-    }
-
-    @Override
-    public Contacts deleteContactsByid(Long id) {
-        Contacts temp = getContactById(id);
-        contactsRepository.deleteById(id);
-        return temp;
-    }
-
-    @Override
-    public List<Contacts> getAllByUserId(Long id){
-        return contactsRepository.findAllByUserId(id);
-    }
 }

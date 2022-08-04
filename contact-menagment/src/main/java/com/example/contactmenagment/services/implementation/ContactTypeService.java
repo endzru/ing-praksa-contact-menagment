@@ -2,44 +2,39 @@ package com.example.contactmenagment.services.implementation;
 
 import com.example.contactmenagment.entity.ContactType;
 import com.example.contactmenagment.repository.ContactTypeRepository;
-import com.example.contactmenagment.services.interfaces.ContactTypeServiceInterface;
+//import com.example.contactmenagment.services.interfaces.ContactTypeServiceInterface;
+import com.example.contactmenagment.services.interfaces.ServicesInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ContactTypeService implements ContactTypeServiceInterface {
+public class ContactTypeService implements ServicesInterface<ContactType> {
 
     private final ContactTypeRepository contactTypeRepository;
 
     @Override
-    public List<ContactType> getAllContactTypes() {
+    public void deleteByUid(UUID uid) {
+        contactTypeRepository.deleteContactTypeByUid(uid);
+    }
+
+    @Override
+    public List<ContactType> getAll() {
         return contactTypeRepository.findAll();
     }
 
     @Override
-    public ContactType getContactTypeById(Long id) {
-        return contactTypeRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No ContactType for id: " + id + " found!"));
+    public ContactType getByUid(UUID uid) {
+        return contactTypeRepository.getContactTypeByUid(uid);
     }
 
     @Override
-    public ContactType saveContactType(ContactType cc) {
-        return contactTypeRepository.save(cc);
+    public ContactType save(ContactType contactType) {
+        return contactTypeRepository.save(contactType);
     }
 
-    @Override
-    public ContactType updateContactType(ContactType cc) {
-        return contactTypeRepository.save(cc);
-    }
-
-    @Override
-    public ContactType deleteContactTypeById(Long id) {
-        ContactType c = getContactTypeById(id);
-        contactTypeRepository.deleteById(id);
-
-        return c;
-    }
 }

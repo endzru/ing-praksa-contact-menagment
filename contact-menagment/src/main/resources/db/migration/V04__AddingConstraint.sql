@@ -1,0 +1,1 @@
+alter table contacts ADD foreign key  (user_id) REFERENCES users(id)
