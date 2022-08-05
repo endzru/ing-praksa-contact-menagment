@@ -1,15 +1,20 @@
 package com.example.contactmenagment.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @Entity
 @Table(name="contacts")
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class Contacts {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,10 +31,12 @@ public class Contacts {
     private String contactFirstName;
 
     private String contactLastName;
-
     private String contactEmail;
 
     private String contactPhonenumber;
+
+    @Column(name="uid")
+    private UUID uid;
 
     @CreationTimestamp
     @Column(name="time_created", updatable = false)

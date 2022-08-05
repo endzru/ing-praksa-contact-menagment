@@ -2,43 +2,35 @@ package com.example.contactmenagment.services.implementation;
 
 import com.example.contactmenagment.entity.Role;
 import com.example.contactmenagment.repository.RoleRepository;
-import com.example.contactmenagment.services.interfaces.RoleServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class RoleService implements RoleServiceInterface {
+public class RoleService {
 
     private final RoleRepository roleRepository;
 
-    @Override
-    public List<Role> getAllRole() {
+    public void deleteByUid(UUID uid) {
+        roleRepository.deleteRoleByUid(uid);
+    }
+    public List<Role> getAll() {
         return roleRepository.findAll();
     }
 
-    @Override
-    public Role getRoleById(Long id) {
-        return roleRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No Role for id: " + id + " found!"));
+    public Role getByUid(UUID uid) {
+        return roleRepository.getRoleByUid(uid).orElseThrow(() -> new EntityNotFoundException("No Role found!"));
     }
 
-    @Override
-    public Role saveRole(Role c) {
-        return roleRepository.save(c);
+    public Role save(Role o) {
+        return roleRepository.save( o);
     }
 
-    @Override
-    public Role updateRole(Role c) {
-        return roleRepository.save(c);
-    }
 
-    @Override
-    public Role deleteRoleById(Long id) {
-        Role temp = roleRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No Role for id: " + id + " found!"));
-        roleRepository.deleteById(id);
-        return temp;
-    }
+
 }

@@ -1,40 +1,43 @@
 package com.example.contactmenagment.controllers;
 
+import com.example.contactmenagment.controllers.contactTypeDTO.ContactTypeResponseDTO;
 import com.example.contactmenagment.entity.ContactType;
 import com.example.contactmenagment.services.implementation.ContactTypeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/contact-type")
 public class ContactTypeController {
-
     private final ContactTypeService contactTypeService;
-
     @GetMapping
-    public ResponseEntity<List<ContactType>> getAllContactTypes(){
-        return ResponseEntity.ok().body(contactTypeService.getAllContactTypes());
+    @ResponseBody
+    public List<ContactTypeResponseDTO> getAllContactTypes(){
+        return contactTypeService.getAll();
     }
-    @GetMapping("{id}")
-    public ResponseEntity<ContactType> getContactTypeById(@PathVariable Long id){
-        return ResponseEntity.ok().body(contactTypeService.getContactTypeById(id));
+    @GetMapping("{uid}")
+    @ResponseBody
+    public ContactTypeResponseDTO getContactTypeById(@PathVariable UUID uid){
+        return contactTypeService.getByUid(uid);
     }
     @PostMapping
-    public ResponseEntity<ContactType> saveContactType(@RequestBody ContactType c){
-        return ResponseEntity.ok().body(contactTypeService.saveContactType(c));
+    @ResponseBody
+    public ContactType saveContactType(@RequestBody ContactType c){
+        c.setUid(UUID. randomUUID());
+        return contactTypeService.save(c);
     }
     @PutMapping
-    public ResponseEntity<ContactType> updateContactType(@RequestBody ContactType c){
-        return ResponseEntity.ok().body(contactTypeService.updateContactType(c));
+    public ContactType updateContactType(@RequestBody ContactType c){
+        return contactTypeService.save(c);
     }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ContactType> deleteContactTypeById(@PathVariable Long id){
-        return ResponseEntity.ok().body(contactTypeService.deleteContactTypeById(id));
+    @DeleteMapping("/{uid}")
+    @ResponseBody
+    public void deleteContactTypeById(@PathVariable UUID uid){
+        contactTypeService.deleteByUid(uid);
     }
 
 

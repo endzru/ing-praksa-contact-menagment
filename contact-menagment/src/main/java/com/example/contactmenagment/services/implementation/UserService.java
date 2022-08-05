@@ -1,45 +1,61 @@
 package com.example.contactmenagment.services.implementation;
 
+import com.example.contactmenagment.controllers.contactDTO.ContactResponseDTO;
+import com.example.contactmenagment.controllers.userDTO.UserRequestDTO;
+import com.example.contactmenagment.controllers.userDTO.UserResponseDTO;
+import com.example.contactmenagment.entity.Role;
 import com.example.contactmenagment.entity.User;
+import com.example.contactmenagment.repository.ContactsRepository;
 import com.example.contactmenagment.repository.UserRepository;
-import com.example.contactmenagment.services.interfaces.UserServiceInterface;
+
+import com.example.contactmenagment.services.mappers.ContactMapper;
+import com.example.contactmenagment.services.mappers.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
+
 
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements UserServiceInterface {
+public class UserService{
 
     private final UserRepository userRepository;
+    private final ContactsRepository contactsRepository;
 
-    @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    private final UserMapper userMapper;
+    private final ContactMapper contactMapper;
+
+    @Transactional
+    public void deleteByUid(UUID uid) {
+        userRepository.deleteUserByUid(uid);
     }
 
-    @Override
-    public User getUserById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No User for ID: " + id + " found!"));
+    public List<UserResponseDTO> getAll() {
+        return userMapper.mapFromUserToUserDTO(userRepository.findAll());
     }
 
-    @Override
-    public User saveUser(User s) {
-        return userRepository.save(s);
+    public List<ContactResponseDTO> getAllContactsByUserUid(UUID uid){
+         return contactMapper.mapFromEntityToDTO(contactsRepository.findAllByUser_Uid(uid));
     }
 
-    @Override
-    public User updateUser(User s) {
-        return userRepository.save(s);
+    public User getBYUid(UUID uid){
+        return userRepository.findUserByUid(uid).orElseThrow(() -> new NoSuchElementException("No User found!"));
     }
 
-    @Override
-    public User deleteUserById(Long id) {
-        User temp = userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No User for ID: " + id + " found!"));
-        userRepository.deleteById(id);
-        return temp;
+
+    public UserResponseDTO getByUid(UUID uid) {
+        UserResponseDTO usr = userMapper.mapFromUserToUserDTO(userRepository.findUserByUid(uid).orElseThrow(() -> new NoSuchElementException("No User found!")));
+        return usr;
     }
+
+
+    public void save(UserRequestDTO o) {
+        userRepository.save(userMapper.mapFromUserDTOToUser(o));
+    }
+
 }

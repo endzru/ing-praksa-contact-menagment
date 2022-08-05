@@ -1,13 +1,17 @@
 package com.example.contactmenagment.controllers;
 
 
+import com.example.contactmenagment.controllers.contactDTO.ContactResponseDTO;
+import com.example.contactmenagment.controllers.contactDTO.ContactRequestDTO;
 import com.example.contactmenagment.entity.Contacts;
 import com.example.contactmenagment.services.implementation.ContactsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,27 +20,36 @@ public class ContactsController {
     private final ContactsService contactsServce;
 
     @GetMapping
-    public ResponseEntity<List<Contacts>> getAllContacts(){
-        return ResponseEntity.ok().body(contactsServce.getAllContacts());
+    @ResponseBody
+    public List<ContactResponseDTO> getAllContacts(){
+        return contactsServce.getAll();
     }
-    @GetMapping("/{id}")
-    public ResponseEntity<Contacts> getContactById(@PathVariable Long id){
-        return ResponseEntity.ok().body(contactsServce.getContactById(id));
+    @GetMapping("/{uid}")
+    @ResponseBody
+    public ResponseEntity<ContactResponseDTO> getContactById(@PathVariable UUID uid){
+        return ResponseEntity.ok().body(contactsServce.getDTOByUid(uid));
     }
-    @GetMapping("/users/{id}")
-    public ResponseEntity<List<Contacts>> getContanctsByUserId(@PathVariable Long id){
-        return ResponseEntity.ok().body(contactsServce.getAllByUserId(id));
+
+    @PostMapping("/{uid}")
+    public ResponseEntity saveContact(@PathVariable UUID uid ,@RequestBody ContactRequestDTO contactDTO){
+        contactsServce.saveContact(uid, contactDTO);
+        return ResponseEntity.ok().build();
     }
+
     @PostMapping
-    public ResponseEntity<Contacts> saveContact(@RequestBody Contacts c){
-        return ResponseEntity.ok().body(contactsServce.saveContact(c));
+    @ResponseBody
+    public Contacts saveContact(@RequestBody Contacts c){
+        c.setUid(UUID.randomUUID());
+        return contactsServce.save(c);
     }
     @PutMapping
-    public ResponseEntity<Contacts> updateContact(@RequestBody Contacts c){
-        return ResponseEntity.ok().body(contactsServce.updateContact(c));
+    @ResponseBody
+    public Contacts updateContact(@RequestBody Contacts c){
+        return contactsServce.save(c);
     }
-    @DeleteMapping("{id}")
-    public ResponseEntity<Contacts> deleteContactById(@PathVariable Long id){
-        return ResponseEntity.ok().body(contactsServce.deleteContactsByid(id));
+    @DeleteMapping("{uid}")
+    @ResponseBody
+    public void deleteContactById(@PathVariable UUID uid){
+         contactsServce.deleteByUid(uid);
     }
 }
