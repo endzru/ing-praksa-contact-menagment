@@ -2,34 +2,31 @@ package com.example.contactmenagment.services.implementation;
 
 import com.example.contactmenagment.entity.Role;
 import com.example.contactmenagment.repository.RoleRepository;
-import com.example.contactmenagment.services.interfaces.ServicesInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class RoleService implements ServicesInterface<Role> {
+public class RoleService {
 
     private final RoleRepository roleRepository;
 
-    @Override
     public void deleteByUid(UUID uid) {
         roleRepository.deleteRoleByUid(uid);
     }
-    @Override
     public List<Role> getAll() {
         return roleRepository.findAll();
     }
 
-    @Override
     public Role getByUid(UUID uid) {
-        return roleRepository.getRoleByUid(uid);
+        return roleRepository.getRoleByUid(uid).orElseThrow(() -> new EntityNotFoundException("No Role found!"));
     }
 
-    @Override
     public Role save(Role o) {
         return roleRepository.save( o);
     }

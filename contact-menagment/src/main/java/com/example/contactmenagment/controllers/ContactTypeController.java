@@ -1,5 +1,6 @@
 package com.example.contactmenagment.controllers;
 
+import com.example.contactmenagment.controllers.contactTypeDTO.ContactTypeResponseDTO;
 import com.example.contactmenagment.entity.ContactType;
 import com.example.contactmenagment.services.implementation.ContactTypeService;
 import lombok.RequiredArgsConstructor;
@@ -15,12 +16,12 @@ public class ContactTypeController {
     private final ContactTypeService contactTypeService;
     @GetMapping
     @ResponseBody
-    public List<ContactType> getAllContactTypes(){
+    public List<ContactTypeResponseDTO> getAllContactTypes(){
         return contactTypeService.getAll();
     }
     @GetMapping("{uid}")
     @ResponseBody
-    public ContactType getContactTypeById(@PathVariable UUID uid){
+    public ContactTypeResponseDTO getContactTypeById(@PathVariable UUID uid){
         return contactTypeService.getByUid(uid);
     }
     @PostMapping

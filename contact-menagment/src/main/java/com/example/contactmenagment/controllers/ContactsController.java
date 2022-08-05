@@ -1,12 +1,15 @@
 package com.example.contactmenagment.controllers;
 
 
+import com.example.contactmenagment.controllers.contactDTO.ContactResponseDTO;
+import com.example.contactmenagment.controllers.contactDTO.ContactRequestDTO;
 import com.example.contactmenagment.entity.Contacts;
 import com.example.contactmenagment.services.implementation.ContactsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,13 +21,19 @@ public class ContactsController {
 
     @GetMapping
     @ResponseBody
-    public List<Contacts> getAllContacts(){
+    public List<ContactResponseDTO> getAllContacts(){
         return contactsServce.getAll();
     }
     @GetMapping("/{uid}")
     @ResponseBody
-    public ResponseEntity<Contacts> getContactById(@PathVariable UUID uid){
-        return ResponseEntity.ok().body(contactsServce.getByUid(uid));
+    public ResponseEntity<ContactResponseDTO> getContactById(@PathVariable UUID uid){
+        return ResponseEntity.ok().body(contactsServce.getDTOByUid(uid));
+    }
+
+    @PostMapping("/{uid}")
+    public ResponseEntity saveContact(@PathVariable UUID uid ,@RequestBody ContactRequestDTO contactDTO){
+        contactsServce.saveContact(uid, contactDTO);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping
