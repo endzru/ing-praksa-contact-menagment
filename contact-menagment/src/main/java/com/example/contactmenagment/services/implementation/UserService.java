@@ -11,9 +11,11 @@ import com.example.contactmenagment.repository.UserRepository;
 import com.example.contactmenagment.services.mappers.ContactMapper;
 import com.example.contactmenagment.services.mappers.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.NotFound;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -26,7 +28,6 @@ public class UserService{
 
     private final UserRepository userRepository;
     private final ContactsRepository contactsRepository;
-
     private final UserMapper userMapper;
     private final ContactMapper contactMapper;
 
@@ -43,19 +44,21 @@ public class UserService{
          return contactMapper.mapFromEntityToDTO(contactsRepository.findAllByUser_Uid(uid));
     }
 
-    public User getBYUid(UUID uid){
-        return userRepository.findUserByUid(uid).orElseThrow(() -> new NoSuchElementException("No User found!"));
+    public User getUserByUid(UUID uid){
+        return userRepository.findUserByUid(uid).orElseThrow(() -> new EntityNotFoundException("No User found!"));
     }
 
-
-    public UserResponseDTO getByUid(UUID uid) {
+    public UserResponseDTO getDTOByUid(UUID uid) {
         UserResponseDTO usr = userMapper.mapFromUserToUserDTO(userRepository.findUserByUid(uid).orElseThrow(() -> new NoSuchElementException("No User found!")));
         return usr;
     }
-
 
     public void save(UserRequestDTO o) {
         userRepository.save(userMapper.mapFromUserDTOToUser(o));
     }
 
+    public void updateUser(UUID uid, UserRequestDTO userRequestDTO){
+        User user  = userMapper.mapFromUserDTOToUserUpdate(uid, userRequestDTO);
+        userRepository.save(user);
+    }
 }

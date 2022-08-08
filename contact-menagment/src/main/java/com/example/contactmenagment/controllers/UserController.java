@@ -9,6 +9,7 @@ import com.example.contactmenagment.services.implementation.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,7 +28,7 @@ public class UserController {
     @GetMapping("/{uid}")
     @ResponseBody
     public UserResponseDTO getUserByUid(@PathVariable UUID uid ){
-        return userService.getByUid(uid);
+        return userService.getDTOByUid(uid);
     }
 
     @GetMapping("/{uid}/contacts")
@@ -37,15 +38,15 @@ public class UserController {
 
     @PostMapping
     @ResponseBody
-    public void saveUser(@RequestBody UserRequestDTO s){
+    public void saveUser(@Valid @RequestBody UserRequestDTO s){
         userService.save(s);
     }
 
-//    @PutMapping
-//    @ResponseBody
-//    public User updateUser(@RequestBody User s){
-//        return userService.save(s);
-//    }
+    @PutMapping("/{uid}")
+    @ResponseBody
+    public void updateUser(@Valid @PathVariable UUID uid, @RequestBody UserRequestDTO user){
+        userService.updateUser(uid,user);
+    }
     @DeleteMapping("/{uid}")
     @ResponseBody
     public void deleteUserByUid(@PathVariable UUID uid){

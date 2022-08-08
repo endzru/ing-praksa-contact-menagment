@@ -3,7 +3,7 @@ package com.example.contactmenagment.controllers;
 
 import com.example.contactmenagment.controllers.contactDTO.ContactResponseDTO;
 import com.example.contactmenagment.controllers.contactDTO.ContactRequestDTO;
-import com.example.contactmenagment.entity.Contacts;
+import com.example.contactmenagment.entity.Contact;
 import com.example.contactmenagment.services.implementation.ContactsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -31,25 +31,22 @@ public class ContactsController {
     }
 
     @PostMapping("/{uid}")
-    public ResponseEntity saveContact(@PathVariable UUID uid ,@RequestBody ContactRequestDTO contactDTO){
+    public ResponseEntity saveContact(@Valid @PathVariable UUID uid , @RequestBody ContactRequestDTO contactDTO){
         contactsServce.saveContact(uid, contactDTO);
         return ResponseEntity.ok().build();
     }
-
-    @PostMapping
+    
+    @PutMapping("/{uid}")
     @ResponseBody
-    public Contacts saveContact(@RequestBody Contacts c){
-        c.setUid(UUID.randomUUID());
-        return contactsServce.save(c);
-    }
-    @PutMapping
-    @ResponseBody
-    public Contacts updateContact(@RequestBody Contacts c){
-        return contactsServce.save(c);
+    public void updateContact(@Valid @PathVariable UUID uid, @RequestBody ContactRequestDTO c){
+        contactsServce.updateContact(uid, c);
     }
     @DeleteMapping("{uid}")
     @ResponseBody
     public void deleteContactById(@PathVariable UUID uid){
          contactsServce.deleteByUid(uid);
     }
+
+
+
 }

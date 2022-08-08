@@ -6,9 +6,12 @@ import com.example.contactmenagment.controllers.userDTO.UserResponseDTO;
 import com.example.contactmenagment.entity.Role;
 import com.example.contactmenagment.entity.User;
 import com.example.contactmenagment.repository.ContactsRepository;
+import com.example.contactmenagment.repository.RoleRepository;
+import com.example.contactmenagment.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -18,9 +21,9 @@ import java.util.UUID;
 public class UserMapper {
 
     private final ContactsRepository contactsRepository;
-
+    private final UserRepository userRepository;
     private final ContactMapper contactMapper;
-
+    private final RoleRepository roleRepository;
     public List<UserResponseDTO> mapFromUserToUserDTO(List<User> userList){
         List<UserResponseDTO> dtoList = new ArrayList<>();
         for (User u: userList) {
@@ -55,4 +58,16 @@ public class UserMapper {
         user.setRole(new Role(6L, "user", userRequestDTO.getRoleid()));
         return user;
     }
+    public User mapFromUserDTOToUserUpdate(UUID uid, UserRequestDTO userRequestDTO){
+        User user =userRepository.findUserByUid(uid).orElseThrow(()-> new EntityNotFoundException("No user found!"));
+        user.setFirstName(userRequestDTO.getFirstName());
+        user.setLastName(userRequestDTO.getLastName());
+        user.setEmail(userRequestDTO.getEmail());
+        user.setPassword(userRequestDTO.getPassword());
+        user.setRole(roleRepository.getRoleByUid(userRequestDTO.getRoleid())
+                .orElseThrow(()->new EntityNotFoundException("NO role found!")));
+
+        return user;
+    }
+
 }

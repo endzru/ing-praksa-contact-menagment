@@ -15,16 +15,16 @@ import java.util.UUID;
 @Table(name="contacts")
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class Contacts {
+public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="contact_type_id")
     private ContactType contactType;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
     private User user;
 

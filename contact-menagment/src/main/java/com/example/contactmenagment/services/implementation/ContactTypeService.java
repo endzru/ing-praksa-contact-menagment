@@ -1,5 +1,6 @@
 package com.example.contactmenagment.services.implementation;
 
+import com.example.contactmenagment.controllers.contactTypeDTO.ContactTypeRequestDTO;
 import com.example.contactmenagment.controllers.contactTypeDTO.ContactTypeResponseDTO;
 import com.example.contactmenagment.entity.ContactType;
 import com.example.contactmenagment.repository.ContactTypeRepository;
@@ -7,6 +8,8 @@ import com.example.contactmenagment.repository.ContactTypeRepository;
 import com.example.contactmenagment.services.mappers.ContactTypeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,15 +33,24 @@ public class ContactTypeService  {
         return contactTypeMapper.mapFromContactTypeEntityToContactTypeDTO(contactTypeRepository.findAll());
     }
 
-    public ContactType getContactByUid(UUID uid) {
+    public Page<ContactTypeResponseDTO> getAllContactTypesResponseDTOPages(int offset, int pageSize){
+        Page<ContactTypeResponseDTO> contactTypeResponseDTOS = contactTypeMapper.mapFromEntityList(contactTypeRepository.findAll(PageRequest.of(offset, pageSize)));
+        return contactTypeResponseDTOS;
+    }
+
+    public ContactType getContactTypeByUid(UUID uid) {
         return contactTypeRepository.getContactTypeByUid(uid).orElseThrow(() -> new EntityNotFoundException("Contact type not found!"));
     }
     public ContactTypeResponseDTO getByUid(UUID uid){
         return contactTypeMapper.mapFromContactTypeEntityToContactTypeDTO(contactTypeRepository.getContactTypeByUid(uid).
                 orElseThrow(() -> new EntityNotFoundException("Contact type not found!")));
     }
-    public ContactType save(ContactType contactType) {
-        return contactTypeRepository.save(contactType);
+    public void save(ContactTypeRequestDTO contactTypeRequestDTO) {
+       contactTypeRepository.save(contactTypeMapper.mapFromEntityDTOToEntity(contactTypeRequestDTO));
     }
+    public void updateContact(UUID uid, ContactTypeRequestDTO contactTypeRequestDTO){
+        ContactType contactType = contactTypeMapper.mapFromEntityDTOToEntityUpdate(uid, contactTypeRequestDTO);
+        contactTypeRepository.save(contactType);
 
+    }
 }

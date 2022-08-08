@@ -1,11 +1,14 @@
 package com.example.contactmenagment.controllers;
 
+import com.example.contactmenagment.controllers.contactTypeDTO.ContactTypeRequestDTO;
 import com.example.contactmenagment.controllers.contactTypeDTO.ContactTypeResponseDTO;
 import com.example.contactmenagment.entity.ContactType;
 import com.example.contactmenagment.services.implementation.ContactTypeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,20 +28,23 @@ public class ContactTypeController {
         return contactTypeService.getByUid(uid);
     }
     @PostMapping
-    @ResponseBody
-    public ContactType saveContactType(@RequestBody ContactType c){
-        c.setUid(UUID. randomUUID());
-        return contactTypeService.save(c);
+    public void saveContactType(@Valid @RequestBody ContactTypeRequestDTO contactTypeRequestDTO){
+        contactTypeService.save(contactTypeRequestDTO);
     }
-    @PutMapping
-    public ContactType updateContactType(@RequestBody ContactType c){
-        return contactTypeService.save(c);
+    @GetMapping("/{offset}/{pageSize}")
+    public Page<ContactTypeResponseDTO> getAllContactTypePagination(@PathVariable int offset, @PathVariable int pageSize){
+        Page<ContactTypeResponseDTO> lista = contactTypeService.getAllContactTypesResponseDTOPages(offset, pageSize);
+        return lista;
+    }
+
+    @PutMapping("/{uid}")
+    public void updateContactType(@Valid @PathVariable UUID uid, @RequestBody ContactTypeRequestDTO c){
+        contactTypeService.updateContact(uid, c);
     }
     @DeleteMapping("/{uid}")
     @ResponseBody
     public void deleteContactTypeById(@PathVariable UUID uid){
         contactTypeService.deleteByUid(uid);
     }
-
 
 }
