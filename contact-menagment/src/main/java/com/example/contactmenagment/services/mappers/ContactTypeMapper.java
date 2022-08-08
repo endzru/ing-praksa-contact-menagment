@@ -49,7 +49,6 @@ public class ContactTypeMapper {
         return contactType;
     }
     public Page<ContactTypeResponseDTO> mapFromEntityList(Page<ContactType> contactTypePage){
-
         return contactTypePage.map(this::mapFromContactTypeEntityToContactTypeDTO);
     }
     public ContactType mapFromEntityDTOToEntityUpdate(UUID uid, ContactTypeRequestDTO contactTypeRequestDTO){

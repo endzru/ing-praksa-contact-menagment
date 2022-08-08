@@ -31,10 +31,10 @@ public class ContactTypeController {
     public void saveContactType(@Valid @RequestBody ContactTypeRequestDTO contactTypeRequestDTO){
         contactTypeService.save(contactTypeRequestDTO);
     }
-    @GetMapping("/{offset}/{pageSize}")
+    @GetMapping("/{offset}/{pageSize}/{field}")
     public Page<ContactTypeResponseDTO> getAllContactTypePagination(@PathVariable int offset, @PathVariable int pageSize){
-        Page<ContactTypeResponseDTO> lista = contactTypeService.getAllContactTypesResponseDTOPages(offset, pageSize);
-        return lista;
+        Page<ContactTypeResponseDTO> list = contactTypeService.getAllContactTypesResponseDTOPages(offset, pageSize);
+        return list;
     }
 
     @PutMapping("/{uid}")
