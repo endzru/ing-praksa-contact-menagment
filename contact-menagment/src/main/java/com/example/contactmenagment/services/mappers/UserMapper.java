@@ -21,9 +21,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserMapper {
 
-    private final ContactsRepository contactsRepository;
     private final UserRepository userRepository;
-    private final ContactMapper contactMapper;
     private final RoleRepository roleRepository;
     public List<UserResponseDTO> mapFromUserToUserDTO(List<User> userList){
         List<UserResponseDTO> dtoList = new ArrayList<>();
