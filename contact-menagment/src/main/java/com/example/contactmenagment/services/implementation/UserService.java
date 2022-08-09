@@ -3,15 +3,14 @@ package com.example.contactmenagment.services.implementation;
 import com.example.contactmenagment.controllers.contactDTO.ContactResponseDTO;
 import com.example.contactmenagment.controllers.userDTO.UserRequestDTO;
 import com.example.contactmenagment.controllers.userDTO.UserResponseDTO;
-import com.example.contactmenagment.entity.Role;
 import com.example.contactmenagment.entity.User;
 import com.example.contactmenagment.repository.ContactsRepository;
 import com.example.contactmenagment.repository.UserRepository;
-
 import com.example.contactmenagment.services.mappers.ContactMapper;
 import com.example.contactmenagment.services.mappers.UserMapper;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.NotFound;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,12 +35,12 @@ public class UserService{
         userRepository.deleteUserByUid(uid);
     }
 
-    public List<UserResponseDTO> getAll() {
-        return userMapper.mapFromUserToUserDTO(userRepository.findAll());
+    public Page<UserResponseDTO> getAll(Pageable pageable) {
+        return userMapper.mapFromEntityList(userRepository.findAll(pageable));
     }
 
-    public List<ContactResponseDTO> getAllContactsByUserUid(UUID uid){
-         return contactMapper.mapFromEntityToDTO(contactsRepository.findAllByUser_Uid(uid));
+    public Page<ContactResponseDTO> getAllContactsByUserUid(UUID uid, Pageable pageable){
+         return contactMapper.mapFromEntityList(contactsRepository.findAllByUser_Uid(uid, pageable));
     }
 
     public User getUserByUid(UUID uid){

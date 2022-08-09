@@ -7,12 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/roles")
+@RequestMapping("/roles")
 public class RoleController {
 
     private final RoleService roleService;
@@ -34,10 +33,10 @@ public class RoleController {
         return roleService.save(role);
     }
 
-    @PutMapping
+    @PutMapping("/{uid}")
     @ResponseBody
-    public Role updateRole(@RequestBody Role role){
-        return roleService.save(role);
+    public Role updateRole(@PathVariable UUID uid, @RequestBody Role role){
+        return roleService.updateRole(uid, role);
     }
     @DeleteMapping("/{uid}")
     @ResponseBody

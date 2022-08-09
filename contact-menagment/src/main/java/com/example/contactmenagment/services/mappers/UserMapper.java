@@ -9,6 +9,7 @@ import com.example.contactmenagment.repository.ContactsRepository;
 import com.example.contactmenagment.repository.RoleRepository;
 import com.example.contactmenagment.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityNotFoundException;
@@ -32,7 +33,6 @@ public class UserMapper {
             userDto.setEmail(u.getEmail());
             userDto.setFirstName(u.getFirstName());
             userDto.setLastName(u.getLastName());
-            userDto.setContacts(contactMapper.mapFromEntityToDTO(contactsRepository.findAllByUser_Uid(u.getUid())));
             dtoList.add(userDto);
         }
 
@@ -45,7 +45,6 @@ public class UserMapper {
         usrDto.setEmail(user.getEmail());
         usrDto.setFirstName(user.getFirstName());
         usrDto.setLastName(user.getLastName());
-        usrDto.setContacts(contactMapper.mapFromEntityToDTO(contactsRepository.findAllByUser_Uid(user.getUid())));
         return usrDto;
     }
     public User mapFromUserDTOToUser(UserRequestDTO userRequestDTO){
@@ -69,5 +68,7 @@ public class UserMapper {
 
         return user;
     }
-
+    public Page<UserResponseDTO> mapFromEntityList(Page<User> userPage){
+        return userPage.map(this::mapFromUserToUserDTO);
+    }
 }

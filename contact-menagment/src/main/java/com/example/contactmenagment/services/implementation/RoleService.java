@@ -4,10 +4,10 @@ import com.example.contactmenagment.entity.Role;
 import com.example.contactmenagment.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -16,6 +16,7 @@ public class RoleService {
 
     private final RoleRepository roleRepository;
 
+    @Transactional
     public void deleteByUid(UUID uid) {
         roleRepository.deleteRoleByUid(uid);
     }
@@ -30,7 +31,12 @@ public class RoleService {
     public Role save(Role o) {
         return roleRepository.save( o);
     }
+    public Role updateRole(UUID uid, Role role){
+        Role r = roleRepository.getRoleByUid(uid).orElseThrow(() -> new EntityNotFoundException("No Role found!"));
+        r.setRoleName(role.getRoleName());
 
+        return roleRepository.save(r);
+    }
 
 
 }

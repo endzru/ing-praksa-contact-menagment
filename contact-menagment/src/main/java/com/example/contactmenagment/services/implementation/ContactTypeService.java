@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,9 +35,8 @@ public class ContactTypeService  {
         return contactTypeMapper.mapFromContactTypeEntityToContactTypeDTO(contactTypeRepository.findAll());
     }
 
-    public Page<ContactTypeResponseDTO> getAllContactTypesResponseDTOPages(int offset, int pageSize){
-        Page<ContactTypeResponseDTO> contactTypeResponseDTOS = contactTypeMapper.mapFromEntityList(contactTypeRepository.findAll(PageRequest.of(offset, pageSize)));
-        return contactTypeResponseDTOS;
+    public Page<ContactTypeResponseDTO> getAllContactTypesResponseDTOPages(Pageable pageable){
+        return contactTypeMapper.mapFromEntityList(contactTypeRepository.findAll(pageable));
     }
 
     public ContactType getContactTypeByUid(UUID uid) {

@@ -9,6 +9,8 @@ import com.example.contactmenagment.repository.ContactsRepository;
 
 import com.example.contactmenagment.services.mappers.ContactMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,8 +32,8 @@ public class ContactsService {
         contactsRepository.deleteContactsByUid(uid);
     }
 
-    public List<ContactResponseDTO> getAll() {
-        return contactMapper.mapFromEntityToDTO(contactsRepository.findAll());
+    public Page<ContactResponseDTO> getAll(Pageable pageable) {
+        return contactMapper.mapFromEntityList(contactsRepository.findAll(pageable));
     }
 
     public Contact getContactByUid(UUID uid) {

@@ -1,28 +1,28 @@
 package com.example.contactmenagment.controllers;
 
 
-import com.example.contactmenagment.controllers.contactDTO.ContactResponseDTO;
 import com.example.contactmenagment.controllers.contactDTO.ContactRequestDTO;
-import com.example.contactmenagment.entity.Contact;
+import com.example.contactmenagment.controllers.contactDTO.ContactResponseDTO;
 import com.example.contactmenagment.services.implementation.ContactsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/contacts")
+@RequestMapping("/contacts")
 public class ContactsController {
     private final ContactsService contactsServce;
 
-    @GetMapping
+    @GetMapping()
     @ResponseBody
-    public List<ContactResponseDTO> getAllContacts(){
-        return contactsServce.getAll();
+    public Page<ContactResponseDTO> getAllContacts(Pageable pageable){
+        return contactsServce.getAll(pageable);
     }
     @GetMapping("/{uid}")
     @ResponseBody

@@ -2,10 +2,10 @@ package com.example.contactmenagment.controllers;
 
 import com.example.contactmenagment.controllers.contactTypeDTO.ContactTypeRequestDTO;
 import com.example.contactmenagment.controllers.contactTypeDTO.ContactTypeResponseDTO;
-import com.example.contactmenagment.entity.ContactType;
 import com.example.contactmenagment.services.implementation.ContactTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -14,15 +14,11 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/contact-type")
+@RequestMapping("/contact-types")
 public class ContactTypeController {
     private final ContactTypeService contactTypeService;
-    @GetMapping
-    @ResponseBody
-    public List<ContactTypeResponseDTO> getAllContactTypes(){
-        return contactTypeService.getAll();
-    }
-    @GetMapping("{uid}")
+
+    @GetMapping("/{uid}")
     @ResponseBody
     public ContactTypeResponseDTO getContactTypeById(@PathVariable UUID uid){
         return contactTypeService.getByUid(uid);
@@ -31,10 +27,9 @@ public class ContactTypeController {
     public void saveContactType(@Valid @RequestBody ContactTypeRequestDTO contactTypeRequestDTO){
         contactTypeService.save(contactTypeRequestDTO);
     }
-    @GetMapping("/{offset}/{pageSize}/{field}")
-    public Page<ContactTypeResponseDTO> getAllContactTypePagination(@PathVariable int offset, @PathVariable int pageSize){
-        Page<ContactTypeResponseDTO> list = contactTypeService.getAllContactTypesResponseDTOPages(offset, pageSize);
-        return list;
+    @GetMapping
+    public Page<ContactTypeResponseDTO> getAllContactTypePagination(Pageable pageable){
+        return contactTypeService.getAllContactTypesResponseDTOPages(pageable);
     }
 
     @PutMapping("/{uid}")
