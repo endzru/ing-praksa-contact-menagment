@@ -7,11 +7,8 @@ import com.example.contactmenagment.repository.ContactTypeRepository;
 
 import com.example.contactmenagment.services.mappers.ContactTypeMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

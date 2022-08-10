@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -20,8 +19,10 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
+
     @GetMapping
     @ResponseBody
+
     public Page<UserResponseDTO> getAllUsers(Pageable pageable){
         return userService.getAll(pageable);
     }

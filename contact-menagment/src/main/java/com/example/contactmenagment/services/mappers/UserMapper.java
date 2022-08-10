@@ -5,7 +5,6 @@ import com.example.contactmenagment.controllers.userDTO.UserRequestDTO;
 import com.example.contactmenagment.controllers.userDTO.UserResponseDTO;
 import com.example.contactmenagment.entity.Role;
 import com.example.contactmenagment.entity.User;
-import com.example.contactmenagment.repository.ContactsRepository;
 import com.example.contactmenagment.repository.RoleRepository;
 import com.example.contactmenagment.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
