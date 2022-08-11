@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -59,4 +60,7 @@ public class ContactsService {
         contactsRepository.save(contact);
     }
 
+    public List<ContactResponseDTO> searchContacts(String field) {
+       return contactMapper.mapFromEntityToDTO(contactsRepository.searchContactByContactFirstName(field));
+    }
 }

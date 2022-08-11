@@ -11,42 +11,47 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/contacts")
 public class ContactsController {
-    private final ContactsService contactsServce;
+    private final ContactsService contactsService;
 
     @GetMapping()
     @ResponseBody
     public Page<ContactResponseDTO> getAllContacts(Pageable pageable){
-        return contactsServce.getAll(pageable);
+        return contactsService.getAll(pageable);
     }
     @GetMapping("/{uid}")
     @ResponseBody
     public ResponseEntity<ContactResponseDTO> getContactById(@PathVariable UUID uid){
-        return ResponseEntity.ok().body(contactsServce.getDTOByUid(uid));
+        return ResponseEntity.ok().body(contactsService.getDTOByUid(uid));
     }
 
     @PostMapping("/{uid}")
     public ResponseEntity saveContact(@Valid @PathVariable UUID uid , @RequestBody ContactRequestDTO contactDTO){
-        contactsServce.saveContact(uid, contactDTO);
+        contactsService.saveContact(uid, contactDTO);
         return ResponseEntity.ok().build();
     }
     
     @PutMapping("/{uid}")
     @ResponseBody
     public void updateContact(@Valid @PathVariable UUID uid, @RequestBody ContactRequestDTO c){
-        contactsServce.updateContact(uid, c);
+        contactsService.updateContact(uid, c);
     }
     @DeleteMapping("{uid}")
     @ResponseBody
     public void deleteContactById(@PathVariable UUID uid){
-         contactsServce.deleteByUid(uid);
+         contactsService.deleteByUid(uid);
     }
 
+    @GetMapping("/search/{field}")
+    public List<ContactResponseDTO> searchContacts(@PathVariable String field){
+        return contactsService.searchContacts(field);
+    }
 
 
 }

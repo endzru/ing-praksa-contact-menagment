@@ -3,33 +3,41 @@ package com.example.contactmenagment.security;
 import com.example.contactmenagment.security.customUserService.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class CustomWebSecurityAdapter {
+
     @Autowired
     private final CustomUserDetailsService usersDetailsService;
 
-
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/users")
-                .hasRole("ADMIN").anyRequest().authenticated().and().httpBasic();
-
+                .antMatchers(HttpMethod.POST,"/users").anonymous()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/users").hasRole("ADMIN")
+                .antMatchers("/contacts").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE,"/users/**").hasRole("ADMIN")
+                .and()
+                .httpBasic();
         return http.build();
     }
 
@@ -46,10 +54,15 @@ public class CustomWebSecurityAdapter {
 
         return authenticationProvider;
     }
-//    @Bean
-//    public InMemoryUserDetailsManager  userDetailsService(){
-//        UserDetails userDetails = User.builder().username("user").password(getPasswordEncoder().encode("pass")).roles("ADMIN").build();
-//        System.out.println(userDetails);
-//        return new InMemoryUserDetailsManager(userDetails);
-//    }
+    @Bean
+    public boolean isAuthenticated(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return false;
+        }
+        //System.out.println(authentication.getName());
+        return true;
+    }
+
+
 }
