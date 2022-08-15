@@ -3,7 +3,6 @@ package com.example.contactmenagment.services.mappers;
 
 import com.example.contactmenagment.controllers.userDTO.UserRequestDTO;
 import com.example.contactmenagment.controllers.userDTO.UserResponseDTO;
-import com.example.contactmenagment.entity.Role;
 import com.example.contactmenagment.entity.User;
 import com.example.contactmenagment.repository.RoleRepository;
 import com.example.contactmenagment.repository.UserRepository;
@@ -53,7 +52,7 @@ public class UserMapper {
         user.setFirstName(userRequestDTO.getFirstName());
         user.setLastName(userRequestDTO.getLastName());
         user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
-        user.setRole(new Role(6L, "user", userRequestDTO.getRoleid()));
+        user.setRole(roleRepository.getRoleByUid(userRequestDTO.getRoleid()).orElseThrow(()-> new EntityNotFoundException("No role found!")));
         return user;
     }
     public User mapFromUserDTOToUserUpdate(UUID uid, UserRequestDTO userRequestDTO){

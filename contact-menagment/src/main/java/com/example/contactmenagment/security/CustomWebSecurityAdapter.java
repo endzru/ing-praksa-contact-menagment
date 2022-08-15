@@ -3,11 +3,8 @@ package com.example.contactmenagment.security;
 import com.example.contactmenagment.security.customUserService.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
 @Configuration
 @EnableWebSecurity
@@ -31,11 +27,8 @@ public class CustomWebSecurityAdapter {
 
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST,"/users").anonymous()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/users").hasRole("ADMIN")
-                .antMatchers("/contacts").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE,"/users/**").hasRole("ADMIN")
+                .antMatchers( "/admin/**").hasRole("ADMIN")
+                .antMatchers("/user/**").hasRole("USER")
                 .and()
                 .httpBasic();
         return http.build();
@@ -54,13 +47,13 @@ public class CustomWebSecurityAdapter {
 
         return authenticationProvider;
     }
+
     @Bean
-    public boolean isAuthenticated(){
+    public boolean isAuthenticated() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
             return false;
         }
-        //System.out.println(authentication.getName());
         return true;
     }
 

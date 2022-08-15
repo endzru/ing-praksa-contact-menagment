@@ -17,7 +17,7 @@ import java.util.*;
 
 @Data
 @Entity
-@Table(name="users")
+@Table(name = "users")
 
 public class User implements UserDetails {
     @Id
@@ -32,25 +32,24 @@ public class User implements UserDetails {
 
     @NotBlank
     private String lastName;
+
     @NotBlank
+
     private String password;
 
     @NotNull
     @Column(name = "uid", unique = true)
     private UUID uid;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="role_id")
+    @JoinColumn(name = "role_id")
     private Role role;
 
-
-//    @JsonIgnore
-    @OneToMany(mappedBy = "user", fetch= FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Contact> contacts;
 
 
-    @Column(name="time_created", updatable = false)
+    @Column(name = "time_created", updatable = false)
     @CreationTimestamp
     private LocalDateTime timeCreated;
 

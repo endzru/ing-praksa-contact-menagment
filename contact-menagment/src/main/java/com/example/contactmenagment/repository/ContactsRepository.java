@@ -14,9 +14,12 @@ import java.util.UUID;
 @Repository
 public interface ContactsRepository extends JpaRepository<Contact, Long> {
     Optional<Contact> getContactsByUid(UUID uid);
-    void deleteContactsByUid(UUID uid);
+    void deleteByUidAndUser_Uid(UUID contactUid, UUID userUid);
     List<Contact> findAllByUser_Uid(UUID uid);
     Page<Contact> findAllByUser_Uid(UUID uid, Pageable pageable);
+
+    Optional<Contact> findByUidAndUser_Uid(UUID contactUid, UUID userUid);
+
 
     @Query(value = "SELECT * FROM contacts WHERE contact_first_name LIKE CONCAT('%',:field, '%') OR " +
             "contact_last_name LIKE CONCAT('%',:field, '%')" +
