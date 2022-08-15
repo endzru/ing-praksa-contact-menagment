@@ -1,17 +1,11 @@
 package com.example.contactmenagment.services.mappers;
 
-import com.example.contactmenagment.controllers.contactDTO.ContactResponseDTO;
 import com.example.contactmenagment.controllers.contactDTO.ContactRequestDTO;
-import com.example.contactmenagment.controllers.contactTypeDTO.ContactTypeRequestDTO;
-import com.example.contactmenagment.controllers.contactTypeDTO.ContactTypeResponseDTO;
+import com.example.contactmenagment.controllers.contactDTO.ContactResponseDTO;
 import com.example.contactmenagment.entity.Contact;
-import com.example.contactmenagment.entity.ContactType;
 import com.example.contactmenagment.repository.ContactTypeRepository;
 import com.example.contactmenagment.repository.ContactsRepository;
-import com.example.contactmenagment.services.implementation.ContactTypeService;
-import com.example.contactmenagment.services.implementation.ContactsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
@@ -64,14 +58,13 @@ public class ContactMapper {
         cont.setUid(UUID.randomUUID());
         return cont;
     }
-    public Contact mapFromDTOToEntityUpdate(UUID uid, ContactRequestDTO contactRequestDTO){
-        Contact contact = contactsRepository.getContactsByUid(uid).orElseThrow(() -> new EntityNotFoundException("No Contact found!"));
+    public Contact mapFromDTOToEntityUpdate(UUID contactUid, ContactRequestDTO contactRequestDTO){
+        Contact contact = contactsRepository.getContactsByUid(contactUid).orElseThrow(() -> new EntityNotFoundException("No Contact found!"));
         contact.setContactFirstName(contactRequestDTO.getFirstName());
         contact.setContactLastName(contactRequestDTO.getLastName());
         contact.setContactEmail(contactRequestDTO.getEmail());
         contact.setContactPhonenumber(contactRequestDTO.getPhonenumber());
         contact.setContactType(contactTypeRepository.getContactTypeByUid(contactRequestDTO.getContactTypeUID()).orElseThrow(() -> new EntityNotFoundException("Contact Type not found!")));
-
         return contact;
     }
     public Page<ContactResponseDTO> mapFromEntityList(Page<Contact> contactPage){

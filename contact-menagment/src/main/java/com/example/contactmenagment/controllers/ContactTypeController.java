@@ -9,12 +9,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/contact-types")
+@RequestMapping("/admin/contact-types")
 public class ContactTypeController {
     private final ContactTypeService contactTypeService;
 

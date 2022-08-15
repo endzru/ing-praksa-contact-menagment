@@ -1,6 +1,5 @@
 package com.example.contactmenagment.services.mappers;
 
-import com.example.contactmenagment.controllers.contactDTO.ContactResponseDTO;
 import com.example.contactmenagment.controllers.contactTypeDTO.ContactTypeRequestDTO;
 import com.example.contactmenagment.controllers.contactTypeDTO.ContactTypeResponseDTO;
 import com.example.contactmenagment.entity.ContactType;

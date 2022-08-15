@@ -11,11 +11,11 @@ import com.example.contactmenagment.services.mappers.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
@@ -40,24 +40,26 @@ public class UserService{
     }
 
     public Page<ContactResponseDTO> getAllContactsByUserUid(UUID uid, Pageable pageable){
-         return contactMapper.mapFromEntityList(contactsRepository.findAllByUser_Uid(uid, pageable));
+            return contactMapper.mapFromEntityList(contactsRepository.findAllByUser_Uid(uid, pageable));
     }
 
     public User getUserByUid(UUID uid){
+
         return userRepository.findUserByUid(uid).orElseThrow(() -> new EntityNotFoundException("No User found!"));
     }
 
-    public UserResponseDTO getDTOByUid(UUID uid) {
-        UserResponseDTO usr = userMapper.mapFromUserToUserDTO(userRepository.findUserByUid(uid).orElseThrow(() -> new NoSuchElementException("No User found!")));
-        return usr;
+    public ResponseEntity<UserResponseDTO> getDTOByUid(UUID uid) {
+            return ResponseEntity.ok().body(userMapper.mapFromUserToUserDTO(userRepository.findUserByUid(uid).orElseThrow(() -> new NoSuchElementException("No User found!"))));
     }
 
     public void save(UserRequestDTO o) {
         userRepository.save(userMapper.mapFromUserDTOToUser(o));
     }
 
-    public void updateUser(UUID uid, UserRequestDTO userRequestDTO){
-        User user  = userMapper.mapFromUserDTOToUserUpdate(uid, userRequestDTO);
-        userRepository.save(user);
+    public UserResponseDTO updateUser(UUID uid, UserRequestDTO userRequestDTO){
+            User user  = userMapper.mapFromUserDTOToUserUpdate(uid, userRequestDTO);
+            userRepository.save(user);
+            return userMapper.mapFromUserToUserDTO(user);
     }
+
 }

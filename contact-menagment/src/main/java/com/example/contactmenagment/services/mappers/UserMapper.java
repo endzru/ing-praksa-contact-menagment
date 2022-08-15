@@ -3,13 +3,12 @@ package com.example.contactmenagment.services.mappers;
 
 import com.example.contactmenagment.controllers.userDTO.UserRequestDTO;
 import com.example.contactmenagment.controllers.userDTO.UserResponseDTO;
-import com.example.contactmenagment.entity.Role;
 import com.example.contactmenagment.entity.User;
-import com.example.contactmenagment.repository.ContactsRepository;
 import com.example.contactmenagment.repository.RoleRepository;
 import com.example.contactmenagment.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityNotFoundException;
@@ -23,6 +22,7 @@ public class UserMapper {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
     public List<UserResponseDTO> mapFromUserToUserDTO(List<User> userList){
         List<UserResponseDTO> dtoList = new ArrayList<>();
         for (User u: userList) {
@@ -51,8 +51,8 @@ public class UserMapper {
         user.setEmail(userRequestDTO.getEmail());
         user.setFirstName(userRequestDTO.getFirstName());
         user.setLastName(userRequestDTO.getLastName());
-        user.setPassword(userRequestDTO.getPassword());
-        user.setRole(new Role(6L, "user", userRequestDTO.getRoleid()));
+        user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
+        user.setRole(roleRepository.getRoleByUid(userRequestDTO.getRoleid()).orElseThrow(()-> new EntityNotFoundException("No role found!")));
         return user;
     }
     public User mapFromUserDTOToUserUpdate(UUID uid, UserRequestDTO userRequestDTO){
@@ -60,7 +60,7 @@ public class UserMapper {
         user.setFirstName(userRequestDTO.getFirstName());
         user.setLastName(userRequestDTO.getLastName());
         user.setEmail(userRequestDTO.getEmail());
-        user.setPassword(userRequestDTO.getPassword());
+        user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
         user.setRole(roleRepository.getRoleByUid(userRequestDTO.getRoleid())
                 .orElseThrow(()->new EntityNotFoundException("NO role found!")));
 
