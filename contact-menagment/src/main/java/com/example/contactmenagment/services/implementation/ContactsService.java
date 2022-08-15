@@ -22,13 +22,11 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class ContactsService {
-
     private final ContactsRepository contactRepository;
     private final ContactTypeService contactTypeService;
     private final UserService userService;
@@ -73,7 +71,6 @@ public class ContactsService {
     public List<ContactResponseDTO> searchContacts(String field) {
         return contactMapper.mapFromEntityToDTO(contactRepository.searchContactByContactFirstName(field));
     }
-
     public void updateContact(UUID contactUid, ContactRequestDTO contactRequestDTO) {
         User u = getLoggedInUser();
 
@@ -85,12 +82,12 @@ public class ContactsService {
             throw new AccessDeniedException("Not allowed!");
         }
     }
-
-
     public User getLoggedInUser() {
         String userEmail = "";
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println(user);
 
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             userEmail = authentication.getName();
@@ -99,7 +96,7 @@ public class ContactsService {
         }
         final String email = userEmail;
 
-        return userRepository.findUserByEmail(userEmail).orElseThrow(() -> new NoSuchElementException("User with email : " + email + " does not exist"));
+        return user;
     }
 
 }

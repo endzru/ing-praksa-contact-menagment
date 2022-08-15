@@ -1,6 +1,7 @@
 package com.example.contactmenagment.controllers.contactDTO;
 
 
+import com.opencsv.bean.CsvBindByName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -14,16 +15,19 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class ContactRequestDTO {
+    @CsvBindByName
     @NotBlank
     private String firstName;
+    @CsvBindByName
     @NotBlank
     private String lastName;
+    @CsvBindByName
     @Email
     private String email;
-
+    @CsvBindByName
     @NotBlank
     private String phonenumber;
-
+    @CsvBindByName
     @NotNull
     private UUID contactTypeUID;
 }
