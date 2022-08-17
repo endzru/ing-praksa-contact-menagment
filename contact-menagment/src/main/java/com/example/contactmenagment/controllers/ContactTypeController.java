@@ -20,7 +20,7 @@ public class ContactTypeController {
     @GetMapping("/{uid}")
     @ResponseBody
     public ContactTypeResponseDTO getContactTypeById(@PathVariable UUID uid){
-        return contactTypeService.getByUid(uid);
+        return contactTypeService.getContactTypeDTOByUid(uid);
     }
     @PostMapping
     public void saveContactType(@Valid @RequestBody ContactTypeRequestDTO contactTypeRequestDTO){

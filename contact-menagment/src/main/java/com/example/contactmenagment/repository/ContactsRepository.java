@@ -25,6 +25,12 @@ public interface ContactsRepository extends JpaRepository<Contact, Long> {
             "contact_last_name LIKE CONCAT('%',:field, '%')" +
             "OR contact_email LIKE CONCAT('%',:field, '%') " +
             "OR contact_phonenumber LIKE CONCAT('%',:field, '%') ", nativeQuery = true)
-    List<Contact> searchContactByContactFirstName(String field);
+    Page<Contact> searchContactByContactFirstName(String field, Pageable pageable);
+    @Query(value = "SELECT * FROM contacts JOIN users ON contacts.user_id = users.id " +
+            "WHERE users.uid = :userUid AND (contacts.contact_first_name LIKE CONCAT('%', :field, '%') " +
+            "OR contacts.contact_last_name LIKE CONCAT('%', :field, '%')" +
+            "OR contacts.contact_email LIKE CONCAT('%', :field, '%')" +
+            "OR contacts.contact_phonenumber LIKE CONCAT('%', :field, '%'))", nativeQuery = true)
+    Page<Contact> findByFieldPassedAndUser(String field, UUID userUid, Pageable pageable);
 
 }

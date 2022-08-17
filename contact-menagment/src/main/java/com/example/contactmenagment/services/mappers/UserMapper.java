@@ -4,14 +4,11 @@ package com.example.contactmenagment.services.mappers;
 import com.example.contactmenagment.controllers.userDTO.UserRequestDTO;
 import com.example.contactmenagment.controllers.userDTO.UserResponseDTO;
 import com.example.contactmenagment.entity.User;
-import com.example.contactmenagment.repository.RoleRepository;
-import com.example.contactmenagment.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -20,20 +17,13 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserMapper {
 
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     public List<UserResponseDTO> mapFromUserToUserDTO(List<User> userList){
         List<UserResponseDTO> dtoList = new ArrayList<>();
         for (User u: userList) {
-            UserResponseDTO userDto = new UserResponseDTO();
-            userDto.setUid(u.getUid());
-            userDto.setEmail(u.getEmail());
-            userDto.setFirstName(u.getFirstName());
-            userDto.setLastName(u.getLastName());
+            UserResponseDTO userDto = mapFromUserToUserDTO(u);
             dtoList.add(userDto);
         }
-
         return dtoList;
     }
 
@@ -46,26 +36,27 @@ public class UserMapper {
         return usrDto;
     }
     public User mapFromUserDTOToUser(UserRequestDTO userRequestDTO){
-        User user = new User();
+        User user = mapUser(userRequestDTO);
         user.setUid(UUID.randomUUID());
-        user.setEmail(userRequestDTO.getEmail());
-        user.setFirstName(userRequestDTO.getFirstName());
-        user.setLastName(userRequestDTO.getLastName());
-        user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
-        user.setRole(roleRepository.getRoleByUid(userRequestDTO.getRoleid()).orElseThrow(()-> new EntityNotFoundException("No role found!")));
-        return user;
-    }
-    public User mapFromUserDTOToUserUpdate(UUID uid, UserRequestDTO userRequestDTO){
-        User user =userRepository.findUserByUid(uid).orElseThrow(()-> new EntityNotFoundException("No user found!"));
-        user.setFirstName(userRequestDTO.getFirstName());
-        user.setLastName(userRequestDTO.getLastName());
-        user.setEmail(userRequestDTO.getEmail());
-        user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
-        user.setRole(roleRepository.getRoleByUid(userRequestDTO.getRoleid())
-                .orElseThrow(()->new EntityNotFoundException("NO role found!")));
 
         return user;
     }
+    public User mapFromUserDTOToUserUpdate(UserRequestDTO userRequestDTO){
+        User user = mapUser(userRequestDTO);
+
+        return user;
+    }
+
+    private User mapUser(UserRequestDTO userRequestDTO) {
+        User user = new User();
+        user.setFirstName(userRequestDTO.getFirstName());
+        user.setLastName(userRequestDTO.getLastName());
+        user.setEmail(userRequestDTO.getEmail());
+        user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
+
+        return user;
+    }
+
     public Page<UserResponseDTO> mapFromEntityList(Page<User> userPage){
         return userPage.map(this::mapFromUserToUserDTO);
     }

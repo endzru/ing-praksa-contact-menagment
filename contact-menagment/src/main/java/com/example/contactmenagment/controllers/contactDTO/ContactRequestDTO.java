@@ -8,26 +8,28 @@ import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class ContactRequestDTO {
-    @CsvBindByName
     @NotBlank
+    @CsvBindByName
     private String firstName;
-    @CsvBindByName
+
     @NotBlank
+    @CsvBindByName
     private String lastName;
-    @CsvBindByName
+
     @Email
+    @CsvBindByName
     private String email;
-    @CsvBindByName
+
     @NotBlank
-    private String phonenumber;
     @CsvBindByName
-    @NotNull
+    private String phonenumber;
+
+    @CsvBindByName
     private UUID contactTypeUID;
 }

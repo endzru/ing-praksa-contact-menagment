@@ -3,68 +3,70 @@ package com.example.contactmenagment.controllers;
 
 import com.example.contactmenagment.controllers.contactDTO.ContactRequestDTO;
 import com.example.contactmenagment.controllers.contactDTO.ContactResponseDTO;
-import com.example.contactmenagment.repository.UserRepository;
 import com.example.contactmenagment.services.implementation.ContactsService;
-import com.example.contactmenagment.services.implementation.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.nio.file.AccessDeniedException;
-import java.util.List;
+import javax.validation.constraints.Size;
 import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user/contacts")
+@Validated
 public class ContactsController {
-    private final ContactsService contactsService;
-    private final UserRepository userRepository;
-    private final UserService userService;
+    private final ContactsService contactService;
+
 
 
     @GetMapping()
     @ResponseBody
-    public Page<ContactResponseDTO> getAllContacts(Pageable pageable){
-        return contactsService.getAll(pageable);
+    public Page<ContactResponseDTO> getAllContacts(Pageable pageable) {
+        return contactService.getAll(pageable);
     }
+
     @GetMapping("/{contactUid}")
     @ResponseBody
-    public ResponseEntity<ContactResponseDTO> getContactById(@PathVariable UUID contactUid){
-        return ResponseEntity.ok().body(contactsService.getDTOByUid(contactUid, contactsService.getLoggedInUser().getUid()));
+    public ResponseEntity<ContactResponseDTO> getContactById(@PathVariable UUID contactUid) {
+        return ResponseEntity.ok().body(contactService.getDTOByUid(contactUid, contactService.getLoggedInUser().getUid()));
     }
-
-//    @GetMapping("/{uid}/contacts")
-//    public ResponseEntity<Page<ContactResponseDTO>> getAllContactsByUserUid(@PathVariable  UUID uid, Pageable pageable){
-//        if(getAccess(uid)){
-//            return ResponseEntity.ok().body(userService.getAllContactsByUserUid(uid, pageable));
-//        }
-//        return ResponseEntity.badRequest().build();
-//    }
 
     @PostMapping()
-    public ResponseEntity saveContact(@Valid @RequestBody ContactRequestDTO contactDTO){
-        contactsService.saveContact(contactDTO);
+    public ResponseEntity saveContact(@Valid @RequestBody ContactRequestDTO contactDTO) {
+        contactService.saveContact(contactDTO);
         return ResponseEntity.ok().build();
     }
-    
+
     @PutMapping("/{contactUid}")
     @ResponseBody
-    public void updateContact(@Valid @PathVariable UUID contactUid, @RequestBody ContactRequestDTO contactRequestDTO) throws AccessDeniedException {
-        contactsService.updateContact(contactUid, contactRequestDTO);
-    }
-    @DeleteMapping("{uid}")
-    @ResponseBody
-    public void deleteContactById(@PathVariable UUID uid){
-         contactsService.deleteByUid(uid);
+    public void updateContact(@Valid @PathVariable UUID contactUid, @RequestBody ContactRequestDTO contactRequestDTO) {
+        contactService.updateContact(contactUid, contactRequestDTO);
     }
 
-    @GetMapping("/search/{field}")
-    public List<ContactResponseDTO> searchContacts(@PathVariable String field){
-        return contactsService.searchContacts(field);
+    @DeleteMapping("{contactUid}")
+    @ResponseBody
+    public void deleteContactById(@PathVariable UUID contactUid) {
+        contactService.deleteByUid(contactUid);
     }
+
+
+    @GetMapping("/search/{field}")
+    public Page<ContactResponseDTO> getContactsWithSearch(
+            @PathVariable @Size(min = 3, message = "Search field must contain at least 3 characters.") String field,
+            Pageable pageable) {
+        return contactService.getAllByFieldAdmin(field, pageable);
+    }
+
+    @PostMapping("/file")
+    public ResponseEntity readCSV(@RequestParam("csvfajl") MultipartFile csvfajl){
+        return contactService.sendBatchOfContacts(csvfajl);
+    }
+
 
 }

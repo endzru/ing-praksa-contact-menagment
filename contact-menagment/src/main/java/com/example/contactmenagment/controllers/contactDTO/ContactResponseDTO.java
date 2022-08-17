@@ -19,5 +19,4 @@ public class ContactResponseDTO {
     private String contactType;
     private LocalDateTime timeCreated;
     private LocalDateTime timeUpdated;
-
 }

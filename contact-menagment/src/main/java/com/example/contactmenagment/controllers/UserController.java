@@ -3,7 +3,6 @@ package com.example.contactmenagment.controllers;
 
 import com.example.contactmenagment.controllers.userDTO.UserRequestDTO;
 import com.example.contactmenagment.controllers.userDTO.UserResponseDTO;
-import com.example.contactmenagment.repository.UserRepository;
 import com.example.contactmenagment.services.implementation.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,35 +19,36 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
-    private final UserRepository userRepository;
 
     @GetMapping("")
     @ResponseBody
-    public Page<UserResponseDTO> getAllUsers(Pageable pageable){
+    public Page<UserResponseDTO> getAllUsers(Pageable pageable) {
         return userService.getAll(pageable);
     }
 
-    @GetMapping("/{uid}")
+    @GetMapping("/{userUid}")
     @ResponseBody
-    public ResponseEntity<UserResponseDTO> getUserByUid(@PathVariable UUID uid){
-            return userService.getDTOByUid(uid);
+    public ResponseEntity<UserResponseDTO> getUserByUid(@PathVariable UUID userUid) {
+        return userService.getUserDTOByUid(userUid);
     }
 
     @PostMapping
     @ResponseBody
-    public void saveUser(@Valid @RequestBody UserRequestDTO s){
+    public void saveUser(@Valid @RequestBody UserRequestDTO s) {
         userService.save(s);
     }
 
-    @PutMapping("/{uid}")
+    @PutMapping("/{userUid}")
     @ResponseBody
-    public ResponseEntity<UserResponseDTO> updateUser(@Valid @PathVariable UUID uid, @RequestBody UserRequestDTO user){
-            return ResponseEntity.ok().body(userService.updateUser(uid,user));
+    public ResponseEntity<UserResponseDTO> updateUser(@Valid @RequestBody UserRequestDTO user) {
+        userService.updateUser(user);
+        return ResponseEntity.ok().build();
     }
-    @DeleteMapping("/{uid}")
+
+    @DeleteMapping("/{userUid}")
     @ResponseBody
-    public void deleteUserByUid(@PathVariable UUID uid){
-        userService.deleteByUid(uid);
+    public void deleteUserByUid(@PathVariable UUID userUid) {
+        userService.deleteByUid(userUid);
     }
 
 

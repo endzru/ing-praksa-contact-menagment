@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -23,15 +22,7 @@ public class ContactMapper {
     public List<ContactResponseDTO> mapFromEntityToDTO(List<Contact> contactsList) {
         List<ContactResponseDTO> dtoList = new ArrayList<>();
         for(Contact t : contactsList ){
-            ContactResponseDTO contactDto = new ContactResponseDTO();
-            contactDto.setFirstName(t.getContactFirstName());
-            contactDto.setLastName(t.getContactLastName());
-            contactDto.setEmail(t.getContactEmail());
-            contactDto.setPhonenumber(t.getContactPhonenumber());
-            contactDto.setUid(t.getUid());
-            contactDto.setContactType(t.getContactType().getContactTypeName());
-            contactDto.setTimeCreated(t.getTimeCreated());
-            contactDto.setTimeUpdated(t.getTimeUpdated());
+            ContactResponseDTO contactDto = mapFromContactEntityToDTO(t);
             dtoList.add(contactDto);
         }
         return dtoList;
@@ -49,22 +40,20 @@ public class ContactMapper {
 
         return contactResponseDTO;
     }
-    public Contact mapFromDTOToEntity(ContactRequestDTO contactRequestDTO) {
-        Contact cont = new Contact();
-        cont.setContactFirstName(contactRequestDTO.getFirstName());
-        cont.setContactLastName(contactRequestDTO.getLastName());
-        cont.setContactEmail(contactRequestDTO.getEmail());
-        cont.setContactPhonenumber(contactRequestDTO.getPhonenumber());
-        cont.setUid(UUID.randomUUID());
-        return cont;
-    }
-    public Contact mapFromDTOToEntityUpdate(UUID contactUid, ContactRequestDTO contactRequestDTO){
-        Contact contact = contactsRepository.getContactsByUid(contactUid).orElseThrow(() -> new EntityNotFoundException("No Contact found!"));
-        contact.setContactFirstName(contactRequestDTO.getFirstName());
-        contact.setContactLastName(contactRequestDTO.getLastName());
-        contact.setContactEmail(contactRequestDTO.getEmail());
-        contact.setContactPhonenumber(contactRequestDTO.getPhonenumber());
-        contact.setContactType(contactTypeRepository.getContactTypeByUid(contactRequestDTO.getContactTypeUID()).orElseThrow(() -> new EntityNotFoundException("Contact Type not found!")));
+    public Contact mapFromDTOToEntity(ContactRequestDTO contactRequestDTO, Contact contact) {
+        if(contact == null ){
+            contact = new Contact();
+            contact.setContactFirstName(contactRequestDTO.getFirstName());
+            contact.setContactLastName(contactRequestDTO.getLastName());
+            contact.setContactEmail(contactRequestDTO.getEmail());
+            contact.setContactPhonenumber(contactRequestDTO.getPhonenumber());
+            contact.setUid(UUID.randomUUID());
+        }else{
+            contact.setContactFirstName(contactRequestDTO.getFirstName());
+            contact.setContactLastName(contactRequestDTO.getLastName());
+            contact.setContactEmail(contactRequestDTO.getEmail());
+            contact.setContactPhonenumber(contactRequestDTO.getPhonenumber());
+        }
         return contact;
     }
     public Page<ContactResponseDTO> mapFromEntityList(Page<Contact> contactPage){

@@ -29,7 +29,6 @@ public class RoleController {
     @PostMapping
     @ResponseBody
     public Role saveRole(@RequestBody Role role){
-        role.setUid(UUID. randomUUID());
         return roleService.save(role);
     }
 

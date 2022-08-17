@@ -13,30 +13,30 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class RoleService {
-
     private final RoleRepository roleRepository;
-
     @Transactional
     public void deleteByUid(UUID uid) {
         roleRepository.deleteRoleByUid(uid);
     }
+
+    @Transactional(readOnly = true)
     public List<Role> getAll() {
         return roleRepository.findAll();
     }
-
-    public Role getByUid(UUID uid) {
-        return roleRepository.getRoleByUid(uid).orElseThrow(() -> new EntityNotFoundException("No Role found!"));
+    @Transactional(readOnly = true)
+    public Role getByUid(UUID roleUid) {
+        return roleRepository.getRoleByUid(roleUid).orElseThrow(() -> new EntityNotFoundException("No Role found!"));
     }
-
+    @Transactional
     public Role save(Role o) {
+        o.setUid(UUID.randomUUID());
         return roleRepository.save( o);
     }
-    public Role updateRole(UUID uid, Role role){
-        Role r = roleRepository.getRoleByUid(uid).orElseThrow(() -> new EntityNotFoundException("No Role found!"));
+    @Transactional
+    public Role updateRole(UUID roleUid, Role role){
+        Role r = getByUid(roleUid);
         r.setRoleName(role.getRoleName());
 
         return roleRepository.save(r);
     }
-
-
 }

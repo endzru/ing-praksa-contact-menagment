@@ -1,19 +1,20 @@
 package com.example.contactmenagment.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="roles")
+@Table(name = "roles")
 public class Role {
 
     @Id
@@ -23,7 +24,7 @@ public class Role {
     @NotBlank
     private String roleName;
 
-    @Column(name="uid")
+    @Column(name = "uid")
     private UUID uid;
 
 

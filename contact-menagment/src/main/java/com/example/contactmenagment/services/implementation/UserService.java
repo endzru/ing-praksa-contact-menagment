@@ -1,12 +1,9 @@
 package com.example.contactmenagment.services.implementation;
 
-import com.example.contactmenagment.controllers.contactDTO.ContactResponseDTO;
 import com.example.contactmenagment.controllers.userDTO.UserRequestDTO;
 import com.example.contactmenagment.controllers.userDTO.UserResponseDTO;
 import com.example.contactmenagment.entity.User;
-import com.example.contactmenagment.repository.ContactsRepository;
 import com.example.contactmenagment.repository.UserRepository;
-import com.example.contactmenagment.services.mappers.ContactMapper;
 import com.example.contactmenagment.services.mappers.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 
 
@@ -26,40 +22,42 @@ import java.util.UUID;
 public class UserService{
 
     private final UserRepository userRepository;
-    private final ContactsRepository contactsRepository;
+    private final RoleService roleService;
     private final UserMapper userMapper;
-    private final ContactMapper contactMapper;
+
 
     @Transactional
-    public void deleteByUid(UUID uid) {
-        userRepository.deleteUserByUid(uid);
+    public void deleteByUid(UUID userUid) {
+        userRepository.deleteUserByUid(userUid);
     }
 
+    @Transactional(readOnly = true)
     public Page<UserResponseDTO> getAll(Pageable pageable) {
         return userMapper.mapFromEntityList(userRepository.findAll(pageable));
     }
 
-    public Page<ContactResponseDTO> getAllContactsByUserUid(UUID uid, Pageable pageable){
-            return contactMapper.mapFromEntityList(contactsRepository.findAllByUser_Uid(uid, pageable));
+    @Transactional(readOnly = true)
+    public User getUserByUid(UUID userUid){
+        return userRepository.findUserByUid(userUid).orElseThrow(() -> new EntityNotFoundException("No User found!"));
     }
 
-    public User getUserByUid(UUID uid){
-
-        return userRepository.findUserByUid(uid).orElseThrow(() -> new EntityNotFoundException("No User found!"));
+    @Transactional
+    public ResponseEntity<UserResponseDTO> getUserDTOByUid(UUID userUid) {
+            return ResponseEntity.ok().body(userMapper.mapFromUserToUserDTO(getUserByUid(userUid)));
     }
 
-    public ResponseEntity<UserResponseDTO> getDTOByUid(UUID uid) {
-            return ResponseEntity.ok().body(userMapper.mapFromUserToUserDTO(userRepository.findUserByUid(uid).orElseThrow(() -> new NoSuchElementException("No User found!"))));
+    @Transactional
+    public void save(UserRequestDTO userRequestDTO) {
+        User user = userMapper.mapFromUserDTOToUser(userRequestDTO);
+        user.setRole(roleService.getByUid(userRequestDTO.getRoleid()));
+        userRepository.save(user);
     }
 
-    public void save(UserRequestDTO o) {
-        userRepository.save(userMapper.mapFromUserDTOToUser(o));
-    }
-
-    public UserResponseDTO updateUser(UUID uid, UserRequestDTO userRequestDTO){
-            User user  = userMapper.mapFromUserDTOToUserUpdate(uid, userRequestDTO);
-            userRepository.save(user);
-            return userMapper.mapFromUserToUserDTO(user);
+    @Transactional
+    public void updateUser(UserRequestDTO userRequestDTO){
+        User user = userMapper.mapFromUserDTOToUserUpdate(userRequestDTO);
+        user.setRole(roleService.getByUid(userRequestDTO.getRoleid()));
+        userRepository.save(user);
     }
 
 }

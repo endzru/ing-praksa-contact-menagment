@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -21,11 +20,7 @@ public class ContactTypeMapper {
     public List<ContactTypeResponseDTO> mapFromContactTypeEntityToContactTypeDTO(List<ContactType> contactTypeList){
         List<ContactTypeResponseDTO> contactResponseDTOList = new ArrayList<>();
         for (ContactType contactType : contactTypeList ) {
-            ContactTypeResponseDTO contactTypeResponseDTO = new ContactTypeResponseDTO();
-            contactTypeResponseDTO.setUid(contactType.getUid());
-            contactTypeResponseDTO.setContactTypeName(contactType.getContactTypeName());
-            contactTypeResponseDTO.setTimeCreated(contactType.getTimeCreated());
-            contactTypeResponseDTO.setTimeUpdated(contactType.getTimeUpdated());
+            ContactTypeResponseDTO contactTypeResponseDTO = mapFromContactTypeEntityToContactTypeDTO(contactType);
             contactResponseDTOList.add(contactTypeResponseDTO);
         }
         return contactResponseDTOList;
@@ -51,7 +46,7 @@ public class ContactTypeMapper {
         return contactTypePage.map(this::mapFromContactTypeEntityToContactTypeDTO);
     }
     public ContactType mapFromEntityDTOToEntityUpdate(UUID uid, ContactTypeRequestDTO contactTypeRequestDTO){
-        ContactType contactType = contactTypeRepository.getContactTypeByUid(uid).orElseThrow(() -> new EntityNotFoundException("No ContactType Found!"));
+        ContactType contactType = new ContactType();
         contactType.setContactTypeName(contactTypeRequestDTO.getContactTypeName());
 
         return contactType;

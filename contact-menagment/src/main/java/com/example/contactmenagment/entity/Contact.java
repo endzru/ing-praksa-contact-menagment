@@ -1,18 +1,21 @@
 package com.example.contactmenagment.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @Entity
-@Table(name="contacts")
+@Table(name = "contacts")
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class Contact {
@@ -21,25 +24,25 @@ public class Contact {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="contact_type_id")
+    @JoinColumn(name = "contact_type_id")
     private ContactType contactType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     private String contactFirstName;
-
     private String contactLastName;
     private String contactEmail;
 
+    @NotBlank
     private String contactPhonenumber;
 
-    @Column(name="uid")
+    @Column(name = "uid")
     private UUID uid;
 
     @CreationTimestamp
-    @Column(name="time_created", updatable = false)
+    @Column(name = "time_created", updatable = false)
     private LocalDateTime timeCreated;
 
     @UpdateTimestamp
