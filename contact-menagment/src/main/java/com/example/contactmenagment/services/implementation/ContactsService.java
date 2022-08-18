@@ -72,7 +72,7 @@ public class ContactsService {
     public void saveContact(ContactRequestDTO contactDTO) {
         User s = getLoggedInUser();
         ContactType ct = contactTypeService.getContactTypeByUid(contactDTO.getContactTypeUID());
-        Contact c = contactMapper.mapFromDTOToEntity(contactDTO, null);
+        Contact c = contactMapper.mapFromDTOToEntity(contactDTO);
         c.setUser(s);
         c.setContactType(ct);
         contactRepository.save(c);
@@ -83,7 +83,7 @@ public class ContactsService {
         Contact contact = contactMapper.mapFromDTOToEntity(contactRequestDTO, getContactAndValidate(contactUid));
         ContactType contactType = contactTypeService.getContactTypeByUid(contactRequestDTO.getContactTypeUID());
         contact.setContactType(contactType);
-//        contact.setUser(getLoggedInUser());
+
         contactRepository.save(contact);
     }
 
@@ -127,7 +127,6 @@ public class ContactsService {
                 }
                 return ResponseEntity.ok().build();
             } catch (Exception e) {
-                //logger.info(e.getMessage());
                 return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).build();
             }
 

@@ -26,6 +26,4 @@ public class AdminAccessories {
                                                    String field, Pageable pageable) {
         return contactService.searchContacts(field, pageable);
     }
-
-
 }

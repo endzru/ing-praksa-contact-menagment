@@ -23,8 +23,6 @@ import java.util.UUID;
 public class ContactsController {
     private final ContactsService contactService;
 
-
-
     @GetMapping()
     @ResponseBody
     public Page<ContactResponseDTO> getAllContacts(Pageable pageable) {

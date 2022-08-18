@@ -42,9 +42,9 @@ public class ContactTypeService  {
        contactTypeRepository.save(contactTypeMapper.mapFromEntityDTOToEntity(contactTypeRequestDTO));
     }
     @Transactional
-    public void updateContact(UUID contactTypeUid, ContactTypeRequestDTO contactTypeRequestDTO){
+    public void updateContactType(UUID contactTypeUid, ContactTypeRequestDTO contactTypeRequestDTO){
         ContactType contactType = getContactTypeByUid(contactTypeUid);
-        contactTypeMapper.mapFromEntityDTOToEntityUpdate(contactTypeUid, contactTypeRequestDTO);
+        contactTypeMapper.mapFromEntityDTOToEntityUpdate(contactTypeRequestDTO);
         contactTypeRepository.save(contactType);
     }
     @Transactional

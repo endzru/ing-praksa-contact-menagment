@@ -21,10 +21,10 @@ public class RoleController {
     public List<Role> getAllRoles(){
         return roleService.getAll();
     }
-    @GetMapping("/{uid}")
+    @GetMapping("/{roleUid}")
     @ResponseBody
-    public Role getRoleById(@PathVariable UUID uid) {
-        return roleService.getByUid(uid);
+    public Role getRoleById(@PathVariable UUID roleUid) {
+        return roleService.getByUid(roleUid);
     }
     @PostMapping
     @ResponseBody
@@ -32,14 +32,14 @@ public class RoleController {
         return roleService.save(role);
     }
 
-    @PutMapping("/{uid}")
+    @PutMapping("/{roleUid}")
     @ResponseBody
-    public Role updateRole(@PathVariable UUID uid, @RequestBody Role role){
-        return roleService.updateRole(uid, role);
+    public Role updateRole(@PathVariable UUID roleUid, @RequestBody Role role){
+        return roleService.updateRole(roleUid, role);
     }
-    @DeleteMapping("/{uid}")
+    @DeleteMapping("/{roleUid}")
     @ResponseBody
-    public void deleteRoleByUid(@PathVariable UUID uid){
-         roleService.deleteByUid(uid);
+    public void deleteRoleByUid(@PathVariable UUID roleUid){
+         roleService.deleteByUid(roleUid);
     }
 }

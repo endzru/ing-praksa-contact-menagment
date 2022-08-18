@@ -3,8 +3,6 @@ package com.example.contactmenagment.services.mappers;
 import com.example.contactmenagment.controllers.contactDTO.ContactRequestDTO;
 import com.example.contactmenagment.controllers.contactDTO.ContactResponseDTO;
 import com.example.contactmenagment.entity.Contact;
-import com.example.contactmenagment.repository.ContactTypeRepository;
-import com.example.contactmenagment.repository.ContactsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
@@ -17,17 +15,17 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ContactMapper {
 
-    private final ContactTypeRepository contactTypeRepository;
-    private final ContactsRepository contactsRepository;
+
     public List<ContactResponseDTO> mapFromEntityToDTO(List<Contact> contactsList) {
         List<ContactResponseDTO> dtoList = new ArrayList<>();
-        for(Contact t : contactsList ){
+        for (Contact t : contactsList) {
             ContactResponseDTO contactDto = mapFromContactEntityToDTO(t);
             dtoList.add(contactDto);
         }
         return dtoList;
     }
-    public ContactResponseDTO mapFromContactEntityToDTO(Contact contact){
+
+    public ContactResponseDTO mapFromContactEntityToDTO(Contact contact) {
         ContactResponseDTO contactResponseDTO = new ContactResponseDTO();
         contactResponseDTO.setUid(contact.getUid());
         contactResponseDTO.setFirstName(contact.getContactFirstName());
@@ -40,23 +38,27 @@ public class ContactMapper {
 
         return contactResponseDTO;
     }
-    public Contact mapFromDTOToEntity(ContactRequestDTO contactRequestDTO, Contact contact) {
-        if(contact == null ){
-            contact = new Contact();
-            contact.setContactFirstName(contactRequestDTO.getFirstName());
-            contact.setContactLastName(contactRequestDTO.getLastName());
-            contact.setContactEmail(contactRequestDTO.getEmail());
-            contact.setContactPhonenumber(contactRequestDTO.getPhonenumber());
-            contact.setUid(UUID.randomUUID());
-        }else{
-            contact.setContactFirstName(contactRequestDTO.getFirstName());
-            contact.setContactLastName(contactRequestDTO.getLastName());
-            contact.setContactEmail(contactRequestDTO.getEmail());
-            contact.setContactPhonenumber(contactRequestDTO.getPhonenumber());
-        }
+
+    public Contact mapFromDTOToEntity(ContactRequestDTO contactRequestDTO) {
+        Contact contact = new Contact();
+        mapContactDtoToContact(contactRequestDTO, contact);
+        contact.setUid(UUID.randomUUID());
         return contact;
     }
-    public Page<ContactResponseDTO> mapFromEntityList(Page<Contact> contactPage){
+
+    public Contact mapFromDTOToEntity(ContactRequestDTO contactRequestDTO, Contact contact) {
+        mapContactDtoToContact(contactRequestDTO, contact);
+        return contact;
+    }
+
+    public void mapContactDtoToContact(ContactRequestDTO contactRequestDTO, Contact contact) {
+        contact.setContactFirstName(contactRequestDTO.getFirstName());
+        contact.setContactLastName(contactRequestDTO.getLastName());
+        contact.setContactEmail(contactRequestDTO.getEmail());
+        contact.setContactPhonenumber(contactRequestDTO.getPhonenumber());
+    }
+
+    public Page<ContactResponseDTO> mapFromEntityList(Page<Contact> contactPage) {
         return contactPage.map(this::mapFromContactEntityToDTO);
     }
 }

@@ -18,16 +18,17 @@ import java.util.UUID;
 public class UserMapper {
 
     private final PasswordEncoder passwordEncoder;
-    public List<UserResponseDTO> mapFromUserToUserDTO(List<User> userList){
+
+    public List<UserResponseDTO> mapFromUserToUserDTO(List<User> userList) {
         List<UserResponseDTO> dtoList = new ArrayList<>();
-        for (User u: userList) {
+        for (User u : userList) {
             UserResponseDTO userDto = mapFromUserToUserDTO(u);
             dtoList.add(userDto);
         }
         return dtoList;
     }
 
-    public UserResponseDTO mapFromUserToUserDTO(User user){
+    public UserResponseDTO mapFromUserToUserDTO(User user) {
         UserResponseDTO usrDto = new UserResponseDTO();
         usrDto.setUid(user.getUid());
         usrDto.setEmail(user.getEmail());
@@ -35,29 +36,28 @@ public class UserMapper {
         usrDto.setLastName(user.getLastName());
         return usrDto;
     }
-    public User mapFromUserDTOToUser(UserRequestDTO userRequestDTO){
-        User user = mapUser(userRequestDTO);
+
+    public User mapFromUserDTOToUser(UserRequestDTO userRequestDTO) {
+        User user = new User();
+        mapUser(userRequestDTO, user);
         user.setUid(UUID.randomUUID());
 
         return user;
     }
-    public User mapFromUserDTOToUserUpdate(UserRequestDTO userRequestDTO){
-        User user = mapUser(userRequestDTO);
 
+    public User mapFromUserDTOToUserUpdate(UserRequestDTO userRequestDTO, User user) {
+        mapUser(userRequestDTO, user);
         return user;
     }
 
-    private User mapUser(UserRequestDTO userRequestDTO) {
-        User user = new User();
+    private void mapUser(UserRequestDTO userRequestDTO, User user) {
         user.setFirstName(userRequestDTO.getFirstName());
         user.setLastName(userRequestDTO.getLastName());
         user.setEmail(userRequestDTO.getEmail());
         user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
-
-        return user;
     }
 
-    public Page<UserResponseDTO> mapFromEntityList(Page<User> userPage){
+    public Page<UserResponseDTO> mapFromEntityList(Page<User> userPage) {
         return userPage.map(this::mapFromUserToUserDTO);
     }
 }

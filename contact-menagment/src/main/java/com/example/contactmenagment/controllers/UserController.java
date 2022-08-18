@@ -17,10 +17,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/admin/users")
 public class UserController {
-
     private final UserService userService;
 
-    @GetMapping("")
+    @GetMapping
     @ResponseBody
     public Page<UserResponseDTO> getAllUsers(Pageable pageable) {
         return userService.getAll(pageable);
@@ -40,8 +39,8 @@ public class UserController {
 
     @PutMapping("/{userUid}")
     @ResponseBody
-    public ResponseEntity<UserResponseDTO> updateUser(@Valid @RequestBody UserRequestDTO user) {
-        userService.updateUser(user);
+    public ResponseEntity<UserResponseDTO> updateUser(@Valid @PathVariable UUID userUid, @RequestBody UserRequestDTO user) {
+        userService.updateUser(user, userUid);
         return ResponseEntity.ok().build();
     }
 
@@ -50,6 +49,4 @@ public class UserController {
     public void deleteUserByUid(@PathVariable UUID userUid) {
         userService.deleteByUid(userUid);
     }
-
-
 }

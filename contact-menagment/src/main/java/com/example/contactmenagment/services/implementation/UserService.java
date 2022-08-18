@@ -54,10 +54,10 @@ public class UserService{
     }
 
     @Transactional
-    public void updateUser(UserRequestDTO userRequestDTO){
-        User user = userMapper.mapFromUserDTOToUserUpdate(userRequestDTO);
+    public void updateUser(UserRequestDTO userRequestDTO, UUID userUid){
+        User user = getUserByUid(userUid);
+        user = userMapper.mapFromUserDTOToUserUpdate(userRequestDTO, user);
         user.setRole(roleService.getByUid(userRequestDTO.getRoleid()));
         userRepository.save(user);
     }
-
 }

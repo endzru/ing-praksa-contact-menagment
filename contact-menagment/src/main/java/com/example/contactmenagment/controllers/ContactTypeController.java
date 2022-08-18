@@ -17,10 +17,10 @@ import java.util.UUID;
 public class ContactTypeController {
     private final ContactTypeService contactTypeService;
 
-    @GetMapping("/{uid}")
+    @GetMapping("/{contactTypeUid}")
     @ResponseBody
-    public ContactTypeResponseDTO getContactTypeById(@PathVariable UUID uid){
-        return contactTypeService.getContactTypeDTOByUid(uid);
+    public ContactTypeResponseDTO getContactTypeById(@PathVariable UUID contactTypeUid){
+        return contactTypeService.getContactTypeDTOByUid(contactTypeUid);
     }
     @PostMapping
     public void saveContactType(@Valid @RequestBody ContactTypeRequestDTO contactTypeRequestDTO){
@@ -31,14 +31,14 @@ public class ContactTypeController {
         return contactTypeService.getAllContactTypesResponseDTOPages(pageable);
     }
 
-    @PutMapping("/{uid}")
-    public void updateContactType(@Valid @PathVariable UUID uid, @RequestBody ContactTypeRequestDTO c){
-        contactTypeService.updateContact(uid, c);
+    @PutMapping("/{contactTypeUid}")
+    public void updateContactType(@Valid @PathVariable UUID contactTypeUid, @RequestBody ContactTypeRequestDTO c){
+        contactTypeService.updateContactType(contactTypeUid, c);
     }
-    @DeleteMapping("/{uid}")
+    @DeleteMapping("/{contactTypeUid}")
     @ResponseBody
-    public void deleteContactTypeById(@PathVariable UUID uid){
-        contactTypeService.deleteByUid(uid);
+    public void deleteContactTypeById(@PathVariable UUID contactTypeUid){
+        contactTypeService.deleteByUid(contactTypeUid);
     }
 
 }

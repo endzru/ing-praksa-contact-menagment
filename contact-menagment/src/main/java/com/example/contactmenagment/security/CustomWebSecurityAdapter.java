@@ -1,8 +1,6 @@
 package com.example.contactmenagment.security;
 
-import com.example.contactmenagment.security.customUserService.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,8 +13,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class CustomWebSecurityAdapter {
 
-    @Autowired
-    private final CustomUserDetailsService usersDetailsService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -34,24 +30,6 @@ public class CustomWebSecurityAdapter {
     public BCryptPasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-//    @Bean
-//    public DaoAuthenticationProvider authProvider() {
-//        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-//        authenticationProvider.setPasswordEncoder(getPasswordEncoder());
-//        authenticationProvider.setUserDetailsService(usersDetailsService);
-//
-//        return authenticationProvider;
-//    }
-//
-//    @Bean
-//    public boolean isAuthenticated() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
-//            return false;
-//        }
-//        return true;
-//    }
 
 
 }

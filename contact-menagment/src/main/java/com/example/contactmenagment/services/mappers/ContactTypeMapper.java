@@ -3,7 +3,6 @@ package com.example.contactmenagment.services.mappers;
 import com.example.contactmenagment.controllers.contactTypeDTO.ContactTypeRequestDTO;
 import com.example.contactmenagment.controllers.contactTypeDTO.ContactTypeResponseDTO;
 import com.example.contactmenagment.entity.ContactType;
-import com.example.contactmenagment.repository.ContactTypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
@@ -15,7 +14,7 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 public class ContactTypeMapper {
-    private final ContactTypeRepository contactTypeRepository;
+
 
     public List<ContactTypeResponseDTO> mapFromContactTypeEntityToContactTypeDTO(List<ContactType> contactTypeList){
         List<ContactTypeResponseDTO> contactResponseDTOList = new ArrayList<>();
@@ -45,10 +44,9 @@ public class ContactTypeMapper {
     public Page<ContactTypeResponseDTO> mapFromEntityList(Page<ContactType> contactTypePage){
         return contactTypePage.map(this::mapFromContactTypeEntityToContactTypeDTO);
     }
-    public ContactType mapFromEntityDTOToEntityUpdate(UUID uid, ContactTypeRequestDTO contactTypeRequestDTO){
+    public ContactType mapFromEntityDTOToEntityUpdate( ContactTypeRequestDTO contactTypeRequestDTO){
         ContactType contactType = new ContactType();
         contactType.setContactTypeName(contactTypeRequestDTO.getContactTypeName());
-
         return contactType;
     }
 
