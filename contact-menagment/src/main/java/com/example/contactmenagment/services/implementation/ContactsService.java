@@ -29,7 +29,6 @@ import javax.persistence.EntityNotFoundException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -114,24 +113,31 @@ public class ContactsService {
         return contactMapper.mapFromEntityList(contactRepository.findByFieldPassedAndUser(field, getLoggedInUser().getUid(), pageable));
     }
 
-    public ResponseEntity<Object> sendBatchOfContacts(MultipartFile csvfajl) {
+    public ResponseEntity<ContactRequestDTO> sendBatchOfContacts(MultipartFile csvfajl) {
         if (csvfajl.isEmpty()) {
             return ResponseEntity.noContent().build();
         } else {
             try (Reader reader = new BufferedReader(new InputStreamReader(csvfajl.getInputStream()))) {
                 CsvToBean<ContactRequestDTO> csvToBean = new CsvToBeanBuilder(reader).withType(ContactRequestDTO.class)
                         .withIgnoreLeadingWhiteSpace(true).build();
-                List<ContactRequestDTO> contactList = csvToBean.parse();
-                for (ContactRequestDTO c : contactList) {
-                    saveContact(c);
+                for (ContactRequestDTO c : csvToBean.parse()) {
+                    if (c.getContactTypeUID() != null && (!c.getEmail().equals("")) && !c.getFirstName().equals("") &&
+                            !c.getLastName().equals("") && !c.getPhonenumber().equals("")) {
+                        try{
+                            saveContact(c);
+                        }catch(Exception e){
+                            logger.info(e.toString());
+                        }
+                    }
                 }
-                return ResponseEntity.ok().build();
             } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).build();
+                logger.info(e.toString());
             }
 
+
+            return ResponseEntity.ok().build();
         }
     }
 
-
 }
+

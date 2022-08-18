@@ -22,8 +22,8 @@ public class ContactRequestDTO {
     @CsvBindByName
     private String lastName;
 
-    @Email
     @CsvBindByName
+    @Email
     private String email;
 
     @NotBlank

@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -31,8 +32,11 @@ public class Contact {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @NotBlank
     private String contactFirstName;
+
     private String contactLastName;
+    @Email
     private String contactEmail;
 
     @NotBlank

@@ -62,7 +62,7 @@ public class ContactsController {
     }
 
     @PostMapping("/file")
-    public ResponseEntity readCSV(@RequestParam("csvfajl") MultipartFile csvfajl){
+    public ResponseEntity readCSV(@Valid @RequestParam("csvfajl") MultipartFile csvfajl){
         return contactService.sendBatchOfContacts(csvfajl);
     }
 
