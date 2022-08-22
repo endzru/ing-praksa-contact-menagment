@@ -26,10 +26,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Validator;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +43,7 @@ public class ContactsService {
     private final ContactsRepository contactRepository;
     private final ContactTypeService contactTypeService;
     private final ContactMapper contactMapper;
+    private final Validator validator;
 
 
     @Transactional
@@ -113,29 +118,41 @@ public class ContactsService {
         return contactMapper.mapFromEntityList(contactRepository.findByFieldPassedAndUser(field, getLoggedInUser().getUid(), pageable));
     }
 
-    public ResponseEntity<ContactRequestDTO> sendBatchOfContacts(MultipartFile csvfajl) {
-        if (csvfajl.isEmpty()) {
+    public ResponseEntity importContactsFromFile(MultipartFile file) {
+        int contactsImported = 0;
+        if(file.isEmpty()) {
             return ResponseEntity.noContent().build();
         } else {
-            try (Reader reader = new BufferedReader(new InputStreamReader(csvfajl.getInputStream()))) {
-                CsvToBean<ContactRequestDTO> csvToBean = new CsvToBeanBuilder(reader).withType(ContactRequestDTO.class)
-                        .withIgnoreLeadingWhiteSpace(true).build();
-                for (ContactRequestDTO c : csvToBean.parse()) {
-                    if (c.getContactTypeUID() != null && (!c.getEmail().equals("")) && !c.getFirstName().equals("") &&
-                            !c.getLastName().equals("") && !c.getPhonenumber().equals("")) {
-                        try{
-                            saveContact(c);
-                        }catch(Exception e){
-                            logger.info(e.toString());
-                        }
+            List<String> errors = new ArrayList<>();
+            try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))){
+                CsvToBean<ContactRequestDTO> csvToBean = new CsvToBeanBuilder(reader)
+                        .withType(ContactRequestDTO.class)
+                        .withIgnoreLeadingWhiteSpace(true)
+                        .withIgnoreEmptyLine(true)
+                        .build();
+                List<ContactRequestDTO> contacts = csvToBean.parse();
+                int i = 1;
+                for (ContactRequestDTO c : contacts) {
+                    if(validator.validate(c).size() != 0) {
+                        String s = "Contact " + i + " :";
+                        i++;
+                        validator.validate(c).forEach(cv -> { errors.add(s + cv.getMessage()); });
+                    } else {
+                        this.saveContact(c);
+                        contactsImported++;
                     }
                 }
-            } catch (Exception e) {
-                logger.info(e.toString());
+                if(!errors.isEmpty()) {
+                    return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).body("Some records were incomplete. " +
+                            "Contacts imported: " + contactsImported + ".\n" + errors);
+                } else if(contacts.isEmpty()) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No contacts provided in the file.");
+                } else {
+                    return ResponseEntity.ok().body("All contacts were imported.");
+                }
+            } catch (Exception ex) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File wasn't read. Either the format was incorrect or the file was corrupt.");
             }
-
-
-            return ResponseEntity.ok().build();
         }
     }
 

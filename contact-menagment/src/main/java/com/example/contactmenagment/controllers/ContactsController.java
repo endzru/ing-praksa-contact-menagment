@@ -23,7 +23,7 @@ import java.util.UUID;
 public class ContactsController {
     private final ContactsService contactService;
 
-    @GetMapping()
+    @GetMapping
     @ResponseBody
     public Page<ContactResponseDTO> getAllContacts(Pageable pageable) {
         return contactService.getAll(pageable);
@@ -63,7 +63,7 @@ public class ContactsController {
 
     @PostMapping("/file")
     public ResponseEntity readCSV(@Valid @RequestParam("csvfajl") MultipartFile csvfajl){
-        return contactService.sendBatchOfContacts(csvfajl);
+        return contactService.importContactsFromFile(csvfajl);
     }
 
 
