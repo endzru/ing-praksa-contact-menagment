@@ -3,6 +3,7 @@ package com.example.contactmenagment.controllers;
 
 import com.example.contactmenagment.controllers.contactDTO.ContactRequestDTO;
 import com.example.contactmenagment.controllers.contactDTO.ContactResponseDTO;
+import com.example.contactmenagment.services.implementation.ContactFileImportService;
 import com.example.contactmenagment.services.implementation.ContactsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,7 +23,7 @@ import java.util.UUID;
 @Validated
 public class ContactsController {
     private final ContactsService contactService;
-
+    private final ContactFileImportService contactFileImportService;
     @GetMapping
     @ResponseBody
     public Page<ContactResponseDTO> getAllContacts(Pageable pageable) {
@@ -63,7 +64,7 @@ public class ContactsController {
 
     @PostMapping("/file")
     public ResponseEntity readCSV(@Valid @RequestParam("csvfajl") MultipartFile csvfajl){
-        return contactService.importContactsFromFile(csvfajl);
+        return contactFileImportService.importContactsFromFile(csvfajl);
     }
 
 
