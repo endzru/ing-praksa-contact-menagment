@@ -6,14 +6,15 @@ import com.example.contactmenagment.services.implementation.ContactTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/contact-types")
+@Validated
 public class ContactTypeController {
     private final ContactTypeService contactTypeService;
 
@@ -23,7 +24,7 @@ public class ContactTypeController {
         return contactTypeService.getContactTypeDTOByUid(contactTypeUid);
     }
     @PostMapping
-    public void saveContactType(@Valid @RequestBody ContactTypeRequestDTO contactTypeRequestDTO){
+    public void saveContactType(@RequestBody ContactTypeRequestDTO contactTypeRequestDTO){
         contactTypeService.save(contactTypeRequestDTO);
     }
     @GetMapping
@@ -32,7 +33,7 @@ public class ContactTypeController {
     }
 
     @PutMapping("/{contactTypeUid}")
-    public void updateContactType(@Valid @PathVariable UUID contactTypeUid, @RequestBody ContactTypeRequestDTO c){
+    public void updateContactType(@PathVariable UUID contactTypeUid, @RequestBody ContactTypeRequestDTO c){
         contactTypeService.updateContactType(contactTypeUid, c);
     }
     @DeleteMapping("/{contactTypeUid}")

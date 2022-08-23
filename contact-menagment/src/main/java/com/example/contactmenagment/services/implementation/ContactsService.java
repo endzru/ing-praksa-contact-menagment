@@ -33,8 +33,6 @@ public class ContactsService {
     private final ContactsRepository contactRepository;
     private final ContactTypeService contactTypeService;
     private final ContactMapper contactMapper;
-//    private final Validator validator;
-
 
     @Transactional
     public void deleteByUid(UUID contactUid) {

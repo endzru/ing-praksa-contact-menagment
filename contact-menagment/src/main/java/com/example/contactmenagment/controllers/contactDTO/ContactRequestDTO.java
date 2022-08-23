@@ -26,7 +26,7 @@ public class ContactRequestDTO {
     @Email
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "Phonenumber can not be blank!")
     @CsvBindByName
     private String phonenumber;
 

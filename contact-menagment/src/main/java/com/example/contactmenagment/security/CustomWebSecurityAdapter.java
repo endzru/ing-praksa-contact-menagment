@@ -17,7 +17,7 @@ public class CustomWebSecurityAdapter {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.csrf().and().cors().disable()
+        http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers( "/admin/**").hasRole("ADMIN")
                 .antMatchers("/user/**").hasRole("USER")

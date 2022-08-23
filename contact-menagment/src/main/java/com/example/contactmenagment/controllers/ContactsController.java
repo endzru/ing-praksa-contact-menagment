@@ -44,7 +44,7 @@ public class ContactsController {
 
     @PutMapping("/{contactUid}")
     @ResponseBody
-    public void updateContact(@Valid @PathVariable UUID contactUid, @RequestBody ContactRequestDTO contactRequestDTO) {
+    public void updateContact(@PathVariable UUID contactUid, @RequestBody ContactRequestDTO contactRequestDTO) {
         contactService.updateContact(contactUid, contactRequestDTO);
     }
 
@@ -53,7 +53,6 @@ public class ContactsController {
     public void deleteContactById(@PathVariable UUID contactUid) {
         contactService.deleteByUid(contactUid);
     }
-
 
     @GetMapping("/search/{field}")
     public Page<ContactResponseDTO> getContactsWithSearch(

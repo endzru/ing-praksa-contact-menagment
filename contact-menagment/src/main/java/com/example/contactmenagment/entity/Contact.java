@@ -39,7 +39,7 @@ public class Contact {
     @Email
     private String contactEmail;
 
-    @NotBlank
+    @NotBlank(message = "Phonenumber can not be blank!")
     private String contactPhonenumber;
 
     @Column(name = "uid")
