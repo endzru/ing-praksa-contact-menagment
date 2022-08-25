@@ -1,6 +1,7 @@
 package com.example.contactmenagment.controllers;
 
 
+import com.example.contactmenagment.controllers.controllersInterface.UserControllerInterface;
 import com.example.contactmenagment.controllers.userDTO.UserRequestDTO;
 import com.example.contactmenagment.controllers.userDTO.UserResponseDTO;
 import com.example.contactmenagment.services.implementation.UserService;
@@ -13,10 +14,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.UUID;
 
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/users")
-public class UserController {
+public class UserController implements UserControllerInterface {
     private final UserService userService;
 
     @GetMapping

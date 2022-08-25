@@ -3,6 +3,7 @@ package com.example.contactmenagment.controllers;
 
 import com.example.contactmenagment.controllers.contactDTO.ContactRequestDTO;
 import com.example.contactmenagment.controllers.contactDTO.ContactResponseDTO;
+import com.example.contactmenagment.controllers.controllersInterface.ContactsControllerInterface;
 import com.example.contactmenagment.services.implementation.ContactFileImportService;
 import com.example.contactmenagment.services.implementation.ContactsService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/user/contacts")
 @Validated
-public class ContactsController {
+public class ContactsController implements ContactsControllerInterface {
     private final ContactsService contactService;
     private final ContactFileImportService contactFileImportService;
     @GetMapping
@@ -32,7 +33,7 @@ public class ContactsController {
 
     @GetMapping("/{contactUid}")
     @ResponseBody
-    public ResponseEntity<ContactResponseDTO> getContactById(@PathVariable UUID contactUid) {
+    public ResponseEntity<ContactResponseDTO> getContactByUid(@PathVariable UUID contactUid) {
         return ResponseEntity.ok().body(contactService.getDTOByUid(contactUid, contactService.getLoggedInUser().getUid()));
     }
 
