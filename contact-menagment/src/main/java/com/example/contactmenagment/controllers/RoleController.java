@@ -1,6 +1,7 @@
 package com.example.contactmenagment.controllers;
 
 
+import com.example.contactmenagment.controllers.controllersInterface.RoleControllerInterface;
 import com.example.contactmenagment.entity.Role;
 import com.example.contactmenagment.services.implementation.RoleService;
 import lombok.RequiredArgsConstructor;
@@ -9,10 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/roles")
-public class RoleController {
+public class RoleController implements RoleControllerInterface {
 
     private final RoleService roleService;
 

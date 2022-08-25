@@ -17,7 +17,7 @@ import javax.validation.constraints.Size;
 @RequestMapping("/admin/search")
 @RequiredArgsConstructor
 @Validated
-public class AdminAccessories {
+public class AdminAccessoriesController {
     private final ContactsService contactService;
 
     @GetMapping("/contacts/{field}")

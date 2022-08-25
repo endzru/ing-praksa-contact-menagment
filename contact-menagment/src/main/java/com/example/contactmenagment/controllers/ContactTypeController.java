@@ -2,7 +2,9 @@ package com.example.contactmenagment.controllers;
 
 import com.example.contactmenagment.controllers.contactTypeDTO.ContactTypeRequestDTO;
 import com.example.contactmenagment.controllers.contactTypeDTO.ContactTypeResponseDTO;
+import com.example.contactmenagment.controllers.controllersInterface.ContactTypeControllerInterface;
 import com.example.contactmenagment.services.implementation.ContactTypeService;
+//import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,16 +13,17 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/contact-types")
 @Validated
-public class ContactTypeController {
+public class ContactTypeController implements ContactTypeControllerInterface {
     private final ContactTypeService contactTypeService;
 
     @GetMapping("/{contactTypeUid}")
     @ResponseBody
-    public ContactTypeResponseDTO getContactTypeById(@PathVariable UUID contactTypeUid){
+    public ContactTypeResponseDTO getContactTypeByUid(@PathVariable UUID contactTypeUid){
         return contactTypeService.getContactTypeDTOByUid(contactTypeUid);
     }
     @PostMapping
