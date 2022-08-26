@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -42,6 +43,9 @@ public class UserService {
         return userRepository.findUserByUid(userUid).orElseThrow(() -> new EntityNotFoundException("No User found!"));
     }
 
+    public List<User> getAllusers(){
+        return userRepository.findAll();
+    }
     @Transactional
     public ResponseEntity<UserResponseDTO> getUserDTOByUid(UUID userUid) {
         return ResponseEntity.ok().body(userMapper.mapFromUserToUserDTO(getUserByUid(userUid)));
