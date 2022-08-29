@@ -16,7 +16,6 @@ import javax.validation.constraints.Size;
 import java.util.UUID;
 
 
-
 public interface ContactsControllerInterface extends GlobalApiResponseSetup {
 
     @Tag(name="Get All Contacts", description = "Get all contacts for logged in user.")

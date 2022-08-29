@@ -6,7 +6,6 @@ import com.example.contactmenagment.entity.User;
 import com.example.contactmenagment.repository.UserRepository;
 import com.example.contactmenagment.services.mailService.EmailServiceImplementation;
 import com.example.contactmenagment.services.mappers.UserMapper;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -14,18 +13,26 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.UUID;
 
 
 @Service
-@RequiredArgsConstructor
+
 public class UserService {
 
-    private final UserRepository userRepository;
-    private final RoleService roleService;
-    private final UserMapper userMapper;
+    private  UserRepository userRepository;
+    private  RoleService roleService;
+    private  UserMapper userMapper;
 
-    private final EmailServiceImplementation emailServiceImplementation;
+    private  EmailServiceImplementation emailServiceImplementation;
+
+    public UserService(UserRepository userRepository, RoleService roleService, UserMapper userMapper, EmailServiceImplementation emailServiceImplementation) {
+        this.userRepository = userRepository;
+        this.roleService = roleService;
+        this.userMapper = userMapper;
+        this.emailServiceImplementation = emailServiceImplementation;
+    }
 
     @Transactional
     public void deleteByUid(UUID userUid) {
@@ -42,6 +49,9 @@ public class UserService {
         return userRepository.findUserByUid(userUid).orElseThrow(() -> new EntityNotFoundException("No User found!"));
     }
 
+    public List<User> getAllusers(){
+        return userRepository.findAll();
+    }
     @Transactional
     public ResponseEntity<UserResponseDTO> getUserDTOByUid(UUID userUid) {
         return ResponseEntity.ok().body(userMapper.mapFromUserToUserDTO(getUserByUid(userUid)));
