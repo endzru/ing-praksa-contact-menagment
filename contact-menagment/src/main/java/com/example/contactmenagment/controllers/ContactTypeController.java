@@ -1,9 +1,9 @@
 package com.example.contactmenagment.controllers;
 
-import com.example.contactmenagment.controllers.contactTypeDTO.ContactTypeRequestDTO;
-import com.example.contactmenagment.controllers.contactTypeDTO.ContactTypeResponseDTO;
+import com.example.contactmenagment.controllers.dto.contactTypeDTO.ContactTypeRequestDTO;
+import com.example.contactmenagment.controllers.dto.contactTypeDTO.ContactTypeResponseDTO;
 import com.example.contactmenagment.controllers.controllersInterface.ContactTypeControllerInterface;
-import com.example.contactmenagment.services.implementation.ContactTypeService;
+import com.example.contactmenagment.services.ContactTypeService;
 //import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

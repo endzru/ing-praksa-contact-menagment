@@ -1,7 +1,7 @@
 package com.example.contactmenagment.services.mappers;
 
-import com.example.contactmenagment.controllers.contactTypeDTO.ContactTypeRequestDTO;
-import com.example.contactmenagment.controllers.contactTypeDTO.ContactTypeResponseDTO;
+import com.example.contactmenagment.controllers.dto.contactTypeDTO.ContactTypeRequestDTO;
+import com.example.contactmenagment.controllers.dto.contactTypeDTO.ContactTypeResponseDTO;
 import com.example.contactmenagment.entity.ContactType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

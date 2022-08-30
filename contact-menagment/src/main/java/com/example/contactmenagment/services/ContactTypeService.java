@@ -1,7 +1,7 @@
-package com.example.contactmenagment.services.implementation;
+package com.example.contactmenagment.services;
 
-import com.example.contactmenagment.controllers.contactTypeDTO.ContactTypeRequestDTO;
-import com.example.contactmenagment.controllers.contactTypeDTO.ContactTypeResponseDTO;
+import com.example.contactmenagment.controllers.dto.contactTypeDTO.ContactTypeRequestDTO;
+import com.example.contactmenagment.controllers.dto.contactTypeDTO.ContactTypeResponseDTO;
 import com.example.contactmenagment.entity.ContactType;
 import com.example.contactmenagment.repository.ContactTypeRepository;
 import com.example.contactmenagment.services.mappers.ContactTypeMapper;
@@ -20,7 +20,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ContactTypeService  {
 
-    Logger logger = LoggerFactory.getLogger(ContactsService.class);
+    Logger logger = LoggerFactory.getLogger(ContactService.class);
 
     private final ContactTypeRepository contactTypeRepository;
     private final ContactTypeMapper contactTypeMapper;

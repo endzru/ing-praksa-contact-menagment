@@ -1,9 +1,8 @@
 package com.example.contactmenagment.services;
 
-import com.example.contactmenagment.controllers.userDTO.UserResponseDTO;
+import com.example.contactmenagment.controllers.dto.userDTO.UserResponseDTO;
 import com.example.contactmenagment.entity.User;
 import com.example.contactmenagment.repository.UserRepository;
-import com.example.contactmenagment.services.implementation.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

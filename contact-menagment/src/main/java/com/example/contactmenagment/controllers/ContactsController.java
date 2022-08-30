@@ -1,11 +1,11 @@
 package com.example.contactmenagment.controllers;
 
 
-import com.example.contactmenagment.controllers.contactDTO.ContactRequestDTO;
-import com.example.contactmenagment.controllers.contactDTO.ContactResponseDTO;
+import com.example.contactmenagment.controllers.dto.contactDTO.ContactRequestDTO;
+import com.example.contactmenagment.controllers.dto.contactDTO.ContactResponseDTO;
 import com.example.contactmenagment.controllers.controllersInterface.ContactsControllerInterface;
-import com.example.contactmenagment.services.implementation.ContactFileImportService;
-import com.example.contactmenagment.services.implementation.ContactsService;
+import com.example.contactmenagment.services.ContactFileImportService;
+import com.example.contactmenagment.services.ContactService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +23,7 @@ import java.util.UUID;
 @RequestMapping("/user/contacts")
 @Validated
 public class ContactsController implements ContactsControllerInterface {
-    private final ContactsService contactService;
+    private final ContactService contactService;
     private final ContactFileImportService contactFileImportService;
     @GetMapping
     @ResponseBody

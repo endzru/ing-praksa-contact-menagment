@@ -33,14 +33,19 @@ public class Contact {
     private User user;
 
     @NotBlank
-    private String contactFirstName;
+    @Column(name = "contact_first_name")
+    private String firstName;
 
-    private String contactLastName;
+    @Column(name = "contact_last_name")
+    private String lastName;
+
+    @Column(name = "contact_email")
     @Email
     private String contactEmail;
 
     @NotBlank(message = "Phonenumber can not be blank!")
-    private String contactPhonenumber;
+    @Column(name = "contact_phonenumber")
+    private String phonenumber;
 
     @Column(name = "uid")
     private UUID uid;

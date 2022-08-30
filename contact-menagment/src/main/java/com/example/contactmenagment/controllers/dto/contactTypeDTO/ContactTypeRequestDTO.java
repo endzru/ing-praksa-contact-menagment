@@ -1,4 +1,4 @@
-package com.example.contactmenagment.controllers.contactTypeDTO;
+package com.example.contactmenagment.controllers.dto.contactTypeDTO;
 
 
 import lombok.AllArgsConstructor;

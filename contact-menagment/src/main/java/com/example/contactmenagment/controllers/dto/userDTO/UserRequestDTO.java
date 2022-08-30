@@ -1,4 +1,4 @@
-package com.example.contactmenagment.controllers.userDTO;
+package com.example.contactmenagment.controllers.dto.userDTO;
 
 import com.example.contactmenagment.entity.validators.ValidPassword;
 import lombok.AllArgsConstructor;

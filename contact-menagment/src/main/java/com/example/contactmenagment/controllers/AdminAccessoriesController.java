@@ -1,7 +1,7 @@
 package com.example.contactmenagment.controllers;
 
-import com.example.contactmenagment.controllers.contactDTO.ContactResponseDTO;
-import com.example.contactmenagment.services.implementation.ContactsService;
+import com.example.contactmenagment.controllers.dto.contactDTO.ContactResponseDTO;
+import com.example.contactmenagment.services.ContactService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +18,7 @@ import javax.validation.constraints.Size;
 @RequiredArgsConstructor
 @Validated
 public class AdminAccessoriesController {
-    private final ContactsService contactService;
+    private final ContactService contactService;
 
     @GetMapping("/contacts/{field}")
     public Page<ContactResponseDTO> searchContacts(@PathVariable

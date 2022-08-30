@@ -1,6 +1,5 @@
-package com.example.contactmenagment.security;
+package com.example.contactmenagment.config;
 
-import com.example.contactmenagment.swaggerConfig.NoPopupBasicAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,7 +9,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class CustomWebSecurityAdapter {
+public class SecurityConfig {
     private static final String[] SWAGGER_WHITELIST = {
             "/v3/api-docs/**",
             "/swagger-ui/**",

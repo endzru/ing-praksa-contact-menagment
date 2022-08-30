@@ -1,7 +1,7 @@
 package com.example.contactmenagment.controllers.controllersInterface;
 
-import com.example.contactmenagment.controllers.userDTO.UserRequestDTO;
-import com.example.contactmenagment.controllers.userDTO.UserResponseDTO;
+import com.example.contactmenagment.controllers.dto.userDTO.UserRequestDTO;
+import com.example.contactmenagment.controllers.dto.userDTO.UserResponseDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.util.UUID;
 
@@ -20,7 +21,7 @@ public interface UserControllerInterface  extends GlobalApiResponseSetup{
     ResponseEntity<UserResponseDTO> getUserByUid(@PathVariable UUID userUid);
 
     @Tag(name="Save User.", description = "Send UserRequestDTO and save User.")
-    void saveUser(@Valid @RequestBody UserRequestDTO s);
+    void saveUser(@Valid @RequestBody UserRequestDTO s) throws MessagingException;
 
 
     @Tag(name="Update User.", description = "Update User by sending His UID and UserRequestDTO as body.")

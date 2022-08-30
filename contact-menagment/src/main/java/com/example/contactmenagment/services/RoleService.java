@@ -1,4 +1,4 @@
-package com.example.contactmenagment.services.implementation;
+package com.example.contactmenagment.services;
 
 import com.example.contactmenagment.entity.Role;
 import com.example.contactmenagment.repository.RoleRepository;

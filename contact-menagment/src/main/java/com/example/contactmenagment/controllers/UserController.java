@@ -2,15 +2,16 @@ package com.example.contactmenagment.controllers;
 
 
 import com.example.contactmenagment.controllers.controllersInterface.UserControllerInterface;
-import com.example.contactmenagment.controllers.userDTO.UserRequestDTO;
-import com.example.contactmenagment.controllers.userDTO.UserResponseDTO;
-import com.example.contactmenagment.services.implementation.UserService;
+import com.example.contactmenagment.controllers.dto.userDTO.UserRequestDTO;
+import com.example.contactmenagment.controllers.dto.userDTO.UserResponseDTO;
+import com.example.contactmenagment.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.util.UUID;
 
@@ -35,7 +36,7 @@ public class UserController implements UserControllerInterface {
 
     @PostMapping
     @ResponseBody
-    public void saveUser(@Valid @RequestBody UserRequestDTO s) {
+    public void saveUser(@Valid @RequestBody UserRequestDTO s) throws MessagingException {
         userService.save(s);
     }
 

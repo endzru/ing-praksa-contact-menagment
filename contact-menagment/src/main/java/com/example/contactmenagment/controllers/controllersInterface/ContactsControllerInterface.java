@@ -1,7 +1,7 @@
 package com.example.contactmenagment.controllers.controllersInterface;
 
-import com.example.contactmenagment.controllers.contactDTO.ContactRequestDTO;
-import com.example.contactmenagment.controllers.contactDTO.ContactResponseDTO;
+import com.example.contactmenagment.controllers.dto.contactDTO.ContactRequestDTO;
+import com.example.contactmenagment.controllers.dto.contactDTO.ContactResponseDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

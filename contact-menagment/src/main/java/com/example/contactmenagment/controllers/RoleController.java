@@ -3,7 +3,7 @@ package com.example.contactmenagment.controllers;
 
 import com.example.contactmenagment.controllers.controllersInterface.RoleControllerInterface;
 import com.example.contactmenagment.entity.Role;
-import com.example.contactmenagment.services.implementation.RoleService;
+import com.example.contactmenagment.services.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
