@@ -18,9 +18,13 @@ services:
       - "8080:8080"
   db:
     image: postgres
+#    build:
+#      context: ./DockerDB
+#      dockerfile: Dockerfile
     container_name: db
     environment:
-      - POSTGRES_USER=postgres
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_USER=andrija
       - POSTGRES_PASSWORD=1389
       - POSTGRES_DB=contactdbMig
     ports:
