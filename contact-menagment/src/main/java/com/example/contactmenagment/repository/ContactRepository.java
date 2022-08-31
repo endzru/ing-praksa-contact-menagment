@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface ContactsRepository extends JpaRepository<Contact, Long> {
+public interface ContactRepository extends JpaRepository<Contact, Long> {
     Optional<Contact> getContactsByUid(UUID uid);
     void deleteByUidAndUser_Uid(UUID contactUid, UUID userUid);
     List<Contact> findAllByUser_Uid(UUID uid);

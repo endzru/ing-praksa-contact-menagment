@@ -1,6 +1,6 @@
-package com.example.contactmenagment.services.implementation;
+package com.example.contactmenagment.services;
 
-import com.example.contactmenagment.controllers.contactDTO.ContactRequestDTO;
+import com.example.contactmenagment.controllers.dto.contactDTO.ContactRequestDTO;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ContactFileImportService {
 
-    private final ContactsService contactsService;
+    private final ContactService contactService;
     public ResponseEntity importContactsFromFile(MultipartFile file) {
         Validator validator;
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -46,7 +46,7 @@ public class ContactFileImportService {
                         i++;
                         validator.validate(c).forEach(cv -> { errors.add(s + cv.getMessage()); });
                     } else {
-                        contactsService.saveContact(c);
+                        contactService.saveContact(c);
                         contactsImported++;
                     }
                 }

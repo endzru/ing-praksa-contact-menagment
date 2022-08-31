@@ -1,4 +1,4 @@
-package com.example.contactmenagment.swaggerConfig;
+package com.example.contactmenagment.config;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

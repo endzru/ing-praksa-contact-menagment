@@ -1,7 +1,7 @@
 package com.example.contactmenagment.services.mappers;
 
-import com.example.contactmenagment.controllers.contactDTO.ContactRequestDTO;
-import com.example.contactmenagment.controllers.contactDTO.ContactResponseDTO;
+import com.example.contactmenagment.controllers.dto.contactDTO.ContactRequestDTO;
+import com.example.contactmenagment.controllers.dto.contactDTO.ContactResponseDTO;
 import com.example.contactmenagment.entity.Contact;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,10 +28,10 @@ public class ContactMapper {
     public ContactResponseDTO mapFromContactEntityToDTO(Contact contact) {
         ContactResponseDTO contactResponseDTO = new ContactResponseDTO();
         contactResponseDTO.setUid(contact.getUid());
-        contactResponseDTO.setFirstName(contact.getContactFirstName());
-        contactResponseDTO.setLastName(contact.getContactLastName());
+        contactResponseDTO.setFirstName(contact.getFirstName());
+        contactResponseDTO.setLastName(contact.getLastName());
         contactResponseDTO.setEmail(contact.getContactEmail());
-        contactResponseDTO.setPhonenumber(contact.getContactPhonenumber());
+        contactResponseDTO.setPhonenumber(contact.getPhonenumber());
         contactResponseDTO.setContactType(contact.getContactType().getContactTypeName());
         contactResponseDTO.setTimeCreated(contact.getTimeCreated());
         contactResponseDTO.setTimeUpdated(contact.getTimeUpdated());
@@ -52,10 +52,10 @@ public class ContactMapper {
     }
 
     public void mapContactDtoToContact(ContactRequestDTO contactRequestDTO, Contact contact) {
-        contact.setContactFirstName(contactRequestDTO.getFirstName());
-        contact.setContactLastName(contactRequestDTO.getLastName());
+        contact.setFirstName(contactRequestDTO.getFirstName());
+        contact.setLastName(contactRequestDTO.getLastName());
         contact.setContactEmail(contactRequestDTO.getEmail());
-        contact.setContactPhonenumber(contactRequestDTO.getPhonenumber());
+        contact.setPhonenumber(contactRequestDTO.getPhonenumber());
     }
 
     public Page<ContactResponseDTO> mapFromEntityList(Page<Contact> contactPage) {

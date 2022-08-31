@@ -1,11 +1,11 @@
-package com.example.contactmenagment.services.implementation;
+package com.example.contactmenagment.services;
 
-import com.example.contactmenagment.controllers.contactDTO.ContactRequestDTO;
-import com.example.contactmenagment.controllers.contactDTO.ContactResponseDTO;
+import com.example.contactmenagment.controllers.dto.contactDTO.ContactRequestDTO;
+import com.example.contactmenagment.controllers.dto.contactDTO.ContactResponseDTO;
 import com.example.contactmenagment.entity.Contact;
 import com.example.contactmenagment.entity.ContactType;
 import com.example.contactmenagment.entity.User;
-import com.example.contactmenagment.repository.ContactsRepository;
+import com.example.contactmenagment.repository.ContactRepository;
 import com.example.contactmenagment.services.mappers.ContactMapper;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -27,10 +27,10 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ContactsService {
+public class ContactService {
 
-    Logger logger = LoggerFactory.getLogger(ContactsService.class);
-    private final ContactsRepository contactRepository;
+    Logger logger = LoggerFactory.getLogger(ContactService.class);
+    private final ContactRepository contactRepository;
     private final ContactTypeService contactTypeService;
     private final ContactMapper contactMapper;
 

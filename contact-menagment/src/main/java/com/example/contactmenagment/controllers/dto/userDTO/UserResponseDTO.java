@@ -1,4 +1,4 @@
-package com.example.contactmenagment.controllers.userDTO;
+package com.example.contactmenagment.controllers.dto.userDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

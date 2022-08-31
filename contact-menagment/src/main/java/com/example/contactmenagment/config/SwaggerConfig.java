@@ -1,4 +1,4 @@
-package com.example.contactmenagment.swaggerConfig;
+package com.example.contactmenagment.config;
 
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @SecurityScheme(name = "basicAuth", type = SecuritySchemeType.HTTP, scheme = "basic")
 @OpenAPIDefinition(info = @Info(title = "Contact Manager Api", version = "v1"), security = @SecurityRequirement(name = "basicAuth"))
-public class SwaggerConfigCustom {
+public class SwaggerConfig {
     @Bean
     public GroupedOpenApi userApi() {
         return GroupedOpenApi.builder().group("user")

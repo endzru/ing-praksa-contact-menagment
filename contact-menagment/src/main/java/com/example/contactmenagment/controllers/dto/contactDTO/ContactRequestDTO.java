@@ -1,4 +1,4 @@
-package com.example.contactmenagment.controllers.contactDTO;
+package com.example.contactmenagment.controllers.dto.contactDTO;
 
 
 import com.opencsv.bean.CsvBindByName;

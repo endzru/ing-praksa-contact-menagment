@@ -1,7 +1,5 @@
 package com.example.contactmenagment.services;
 
-import com.example.contactmenagment.services.implementation.ContactFileImportService;
-import com.example.contactmenagment.services.implementation.ContactsService;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
@@ -22,7 +20,7 @@ import java.io.IOException;
 public class ContacServiceTest {
 
     @Mock
-    ContactsService contactsService;
+    ContactService contactService;
     @InjectMocks
     ContactFileImportService contactFileImportService;
 
@@ -39,7 +37,7 @@ public class ContacServiceTest {
                 s.getBytes()
         );
 
-        Mockito.doNothing().when(contactsService).saveContact(Mockito.any());
+        Mockito.doNothing().when(contactService).saveContact(Mockito.any());
         Assertions.assertEquals(ResponseEntity.ok().build(), contactFileImportService.importContactsFromFile(sampleFile));
 
     }
@@ -56,7 +54,7 @@ public class ContacServiceTest {
                 s.getBytes()
         );
 
-        Mockito.doNothing().when(contactsService).saveContact(Mockito.any());
+        Mockito.doNothing().when(contactService).saveContact(Mockito.any());
         Assertions.assertEquals(ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).build().getStatusCode(), contactFileImportService.importContactsFromFile(sampleFile).getStatusCode());
 
     }
@@ -70,7 +68,7 @@ public class ContacServiceTest {
                 s.getBytes()
         );
 
-        Mockito.doNothing().when(contactsService).saveContact(Mockito.any());
+        Mockito.doNothing().when(contactService).saveContact(Mockito.any());
         Assertions.assertEquals(ResponseEntity.status(HttpStatus.NO_CONTENT).build().getStatusCode(), contactFileImportService.importContactsFromFile(sampleFile).getStatusCode());
 
     }
@@ -84,7 +82,7 @@ public class ContacServiceTest {
                 s.getBytes()
         );
 
-        Mockito.doNothing().when(contactsService).saveContact(Mockito.any());
+        Mockito.doNothing().when(contactService).saveContact(Mockito.any());
         Assertions.assertEquals(ResponseEntity.status(HttpStatus.BAD_REQUEST).build().getStatusCode(), contactFileImportService.importContactsFromFile(sampleFile).getStatusCode());
 
     }
