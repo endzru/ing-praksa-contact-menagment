@@ -67,6 +67,7 @@ public class UserService {
     @Transactional
     public void updateUser(UserRequestDTO userRequestDTO, UUID userUid) {
         User user = getUserByUid(userUid);
+        //if(user.equals(userRequestDTO))
         user = userMapper.mapFromUserDTOToUserUpdate(userRequestDTO, user);
         user.setRole(roleService.getByUid(userRequestDTO.getRoleid()));
         userRepository.save(user);

@@ -57,6 +57,13 @@ public class User implements UserDetails {
     @UpdateTimestamp
     private LocalDateTime timeUpdated;
 
+    @Column(name="phonenumber")
+    private String phonenumber;
+
+    @NotNull
+    @Column(name="status")
+    private String status;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
@@ -88,4 +95,15 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(email, user.email) && Objects.equals(firstName, user.firstName) &&
+                Objects.equals(lastName, user.lastName) && Objects.equals(password, user.password) &&
+                Objects.equals(uid, user.uid) && Objects.equals(phonenumber, user.phonenumber);
+    }
+
 }
