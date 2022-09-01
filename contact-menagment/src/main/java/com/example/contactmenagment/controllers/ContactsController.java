@@ -1,9 +1,9 @@
 package com.example.contactmenagment.controllers;
 
 
+import com.example.contactmenagment.controllers.controllersInterface.ContactsControllerInterface;
 import com.example.contactmenagment.controllers.dto.contactDTO.ContactRequestDTO;
 import com.example.contactmenagment.controllers.dto.contactDTO.ContactResponseDTO;
-import com.example.contactmenagment.controllers.controllersInterface.ContactsControllerInterface;
 import com.example.contactmenagment.services.ContactFileImportService;
 import com.example.contactmenagment.services.ContactService;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +25,11 @@ import java.util.UUID;
 public class ContactsController implements ContactsControllerInterface {
     private final ContactService contactService;
     private final ContactFileImportService contactFileImportService;
+
+    private final String verified = "VERIFIED";
     @GetMapping
     @ResponseBody
+    //@PreAuthorize("#contactService.getLoggedInUser().isEnabled()")
     public Page<ContactResponseDTO> getAllContacts(Pageable pageable) {
         return contactService.getAll(pageable);
     }

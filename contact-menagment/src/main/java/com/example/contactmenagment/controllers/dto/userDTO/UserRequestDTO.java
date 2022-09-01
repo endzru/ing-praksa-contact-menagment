@@ -30,7 +30,4 @@ public class UserRequestDTO {
 
     private String phonenumber;
 
-    @NotNull
-    private String status;
-
 }

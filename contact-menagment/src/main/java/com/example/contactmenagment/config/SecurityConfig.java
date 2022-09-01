@@ -8,6 +8,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+//@EnableGlobalMethodSecurity(
+//        prePostEnabled = true)
 @EnableWebSecurity
 public class SecurityConfig {
     private static final String[] SWAGGER_WHITELIST = {
@@ -21,7 +23,8 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers(SWAGGER_WHITELIST).permitAll()
                 .antMatchers( "/admin/**").hasRole("ADMIN")
-                .antMatchers("/user/**").hasRole("USER").anyRequest().authenticated()
+                .antMatchers("/user/**").hasRole("USER")
+                .anyRequest().authenticated()
                 .and().httpBasic().authenticationEntryPoint(new NoPopupBasicAuthenticationEntryPoint());
         return http.build();
     }

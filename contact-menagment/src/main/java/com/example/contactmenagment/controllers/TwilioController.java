@@ -1,28 +1,35 @@
 package com.example.contactmenagment.controllers;
 
 
-import com.twilio.Twilio;
-import com.twilio.rest.api.v2010.account.Message;
-import com.twilio.type.PhoneNumber;
-import org.springframework.http.HttpStatus;
+import com.example.contactmenagment.services.SMSVerificationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("/user")
 public class TwilioController {
+    private final SMSVerificationService smsVerificationService;
+
+    @Autowired
+    public TwilioController(SMSVerificationService smsVerificationService) {
+        this.smsVerificationService = smsVerificationService;
+    }
+
 
     @GetMapping(value = "/sendSMS")
     public ResponseEntity<String> sendSMS() {
-        String sid = "ACd3aba34f3f4c44c923fc8536f3282cb1";
-        String authToken = "34234c4f9e4c9b72fa01c8e8e244b8fc";
-        Twilio.init(sid, authToken);
-
-        Message.creator(new PhoneNumber("+381691134201"),
-                new PhoneNumber("+18145594777"), "Hello from Twilio 📞").create();
-
-        return new ResponseEntity<String>("Message sent successfully", HttpStatus.OK);
+        return smsVerificationService.sendVerificationMessage();
     }
+
+    @GetMapping("/verify/{verificationCode}")
+    public ResponseEntity<String> verify(@PathVariable String verificationCode){
+        return smsVerificationService.verifyUser(verificationCode);
+    }
+
+
+
 }
