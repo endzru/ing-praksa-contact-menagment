@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,14 +23,14 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/user/contacts")
 @Validated
+@PreAuthorize("authentication.principal.status == 'VERIFIED'")
 public class ContactsController implements ContactsControllerInterface {
     private final ContactService contactService;
     private final ContactFileImportService contactFileImportService;
 
-    private final String verified = "VERIFIED";
     @GetMapping
     @ResponseBody
-    //@PreAuthorize("#contactService.getLoggedInUser().isEnabled()")
+
     public Page<ContactResponseDTO> getAllContacts(Pageable pageable) {
         return contactService.getAll(pageable);
     }

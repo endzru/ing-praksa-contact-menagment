@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("")
 public class TwilioController {
     private final SMSVerificationService smsVerificationService;
 
@@ -18,7 +18,6 @@ public class TwilioController {
     public TwilioController(SMSVerificationService smsVerificationService) {
         this.smsVerificationService = smsVerificationService;
     }
-
 
     @GetMapping(value = "/sendSMS")
     public ResponseEntity<String> sendSMS() {
