@@ -1,5 +1,5 @@
 # ing-praksa-contact-menagment
-## ** Installation guide **
+## **Installation guide**
 ## Getting Started
 ### Requirments
 * Java 18
