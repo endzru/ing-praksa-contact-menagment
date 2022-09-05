@@ -20,3 +20,7 @@ git clone https://github.com/TheSpax/contact-management.git
 
 **when the program runs you can access `http://localhost:8080/contact-manager/swagger-ui.html` for the documented API.**
 * there you can see all the enpoints.
+
+##Run with docker
+* If running with docker, docker is the only thing you need installed
+Enter the root folder of the project, in the cmd type `docker-compose build` and `docker-compose up`, this will build the images and run them.
