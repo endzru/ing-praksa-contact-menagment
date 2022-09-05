@@ -1,6 +1,7 @@
 package com.example.contactmenagment.entity;
 
 
+import com.example.contactmenagment.controllers.dto.userDTO.UserRequestDTO;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -57,10 +58,18 @@ public class User implements UserDetails {
     @UpdateTimestamp
     private LocalDateTime timeUpdated;
 
+    @Column(name="phonenumber")
+    private String phonenumber;
+
+    @NotNull
+    @Column(name="status")
+    private String status;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority(this.getRole().getRoleName()));
+        //authorities.add(new SimpleGrantedAuthority(this.getStatus()));
         return authorities;
     }
 
@@ -86,6 +95,36 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return true; //getStatus().equals("VERIFIED");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        //if (o == null || getClass() != o.getClass()) return false;
+        UserRequestDTO user = (UserRequestDTO) o;
+        return Objects.equals(email, user.getEmail())
+                && Objects.equals(firstName, user.getFirstName())
+                && Objects.equals(lastName, user.getLastName())
+                && Objects.equals(password, user.getPassword())
+                && Objects.equals(phonenumber, user.getPhonenumber());
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", password='" + password + '\'' +
+                ", uid=" + uid +
+                ", role=" + role +
+                ", contacts=" + contacts +
+                ", timeCreated=" + timeCreated +
+                ", timeUpdated=" + timeUpdated +
+                ", phonenumber='" + phonenumber + '\'' +
+                ", status='" + status + '\'' +
+                '}';
     }
 }

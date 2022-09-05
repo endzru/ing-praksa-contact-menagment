@@ -34,6 +34,7 @@ public class ContactService {
     private final ContactTypeService contactTypeService;
     private final ContactMapper contactMapper;
 
+
     @Transactional
     public void deleteByUid(UUID contactUid) {
         contactRepository.deleteByUidAndUser_Uid(contactUid, getContactAndValidate(contactUid).getUser().getUid());
@@ -89,7 +90,6 @@ public class ContactService {
             throw new AccessDeniedException("No access!");
         }
     }
-
     public User getLoggedInUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -100,6 +100,7 @@ public class ContactService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Login required.");
         }
     }
+
 
     public Page<ContactResponseDTO> getAllByFieldAdmin(String field, Pageable pageable) {
         return contactMapper.mapFromEntityList(contactRepository.findByFieldPassedAndUser(field, getLoggedInUser().getUid(), pageable));

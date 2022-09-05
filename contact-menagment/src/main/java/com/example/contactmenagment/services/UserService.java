@@ -6,12 +6,19 @@ import com.example.contactmenagment.entity.User;
 import com.example.contactmenagment.repository.UserRepository;
 import com.example.contactmenagment.services.mail.EmailService;
 import com.example.contactmenagment.services.mappers.UserMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.mail.MessagingException;
 import javax.persistence.EntityNotFoundException;
@@ -26,7 +33,7 @@ public class UserService {
     private  UserMapper userMapper;
 
     private EmailService emailService;
-
+    Logger logger = LoggerFactory.getLogger(ContactService.class);
     @Autowired
     public UserService(UserRepository userRepository, RoleService roleService,
                        UserMapper userMapper, EmailService emailService) {
@@ -59,8 +66,8 @@ public class UserService {
     public void save(UserRequestDTO userRequestDTO) throws MessagingException {
         User user = userMapper.mapFromUserDTOToUser(userRequestDTO);
         user.setRole(roleService.getByUid(userRequestDTO.getRoleid()));
+        user.setStatus("NOT_VERIFIED");
         userRepository.save(user);
-
         emailService.sendWelcomeMail(userRequestDTO);
     }
 
@@ -71,4 +78,28 @@ public class UserService {
         user.setRole(roleService.getByUid(userRequestDTO.getRoleid()));
         userRepository.save(user);
     }
+    @Transactional
+    public void profileInformationUpdate(UserRequestDTO userRequestDTO){
+        User user = getLoggedInUser();
+        user = userMapper.mapFromUserDTOToUserUpdate(userRequestDTO, user);
+        user.setRole(roleService.getByUid(userRequestDTO.getRoleid()));
+        userRepository.save(user);
+    }
+
+    public User getLoggedInUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            return user;
+        } else {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Login required.");
+        }
+    }
+    public void validateUser(){
+        User user = getLoggedInUser();
+        user.setStatus("VERIFIED");
+        userRepository.save(user);
+    }
+
 }

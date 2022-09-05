@@ -1,6 +1,7 @@
 package com.example.contactmenagment.controllers.controllerAdvice;
 
 
+import com.twilio.exception.ApiException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +53,13 @@ public class CustomControllerAdvice extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException ex) {
+        Map<String, String> messageBody = new HashMap<>();
+        messageBody.put("message", ex.getMessage());
+        return new ResponseEntity<>(messageBody, HttpStatus.NOT_FOUND);
+    }
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(ApiException.class)
+    public ResponseEntity<Object> handleApiException(ApiException ex){
         Map<String, String> messageBody = new HashMap<>();
         messageBody.put("message", ex.getMessage());
         return new ResponseEntity<>(messageBody, HttpStatus.NOT_FOUND);
