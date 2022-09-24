@@ -12,7 +12,7 @@
 ### Running the API
 **Clone this repository** 
 ```bash
-git clone https://github.com/TheSpax/contact-management.git
+git clone https://github.com/endzru/ing-praksa-contact-menagment.git
 ```
 * When opening the project, open the contact-menagment folder with your IDE
 * Open the project folder `contact-menagment` and in comand prompt type `mvn clean install`  (this will install all dependencies)
